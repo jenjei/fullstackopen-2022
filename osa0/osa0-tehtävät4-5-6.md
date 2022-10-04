@@ -4,7 +4,7 @@ Mitä tapahtuu selaimessa ja palvelimessa, kun käyttäjä luo uuden muistiinpan
 
 Mene osoitteeseen https://www.websequencediagrams.com/
 
-Ja liitä sivulle seuraava:
+Ja liitä sivulle seuraava nähdäksesi sekvenssikaavion:
 
 ```
 selain->palvelin: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
@@ -41,7 +41,7 @@ Mitä tapahtuu selaimessa ja palvelimessa, kun käyttäjä avaa muistiinpanojen 
 
 Mene osoitteeseen https://www.websequencediagrams.com/
 
-Ja liitä sivulle seuraava:
+Ja liitä sivulle seuraava nähdäksesi sekvenssikaavion:
 
 ```
 selain->palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
@@ -73,7 +73,7 @@ Mitä tapahtuu selaimessa ja palvelimessa, kun käyttäjä luo uuden muistiinpan
 
 Mene osoitteeseen https://www.websequencediagrams.com/
 
-Ja liitä sivulle seuraava:
+Ja liitä sivulle seuraava nähdäksesi sekvenssikaavion:
 
 ```
 selain->palvelin: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
