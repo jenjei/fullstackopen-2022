@@ -1,27 +1,40 @@
 import { useState } from 'react'
 
+const Statistics = ({clicks}) => {
+  const total = clicks.good + clicks.bad + clicks.neutral
+  const average = (clicks.good*1 + clicks.bad*-1)/total 
+  const positive = clicks.good/total*100
+
+  console.log('clicks', total)
+
+  return (
+    <div>
+      <h2>statistics</h2>
+      <p>good: {clicks.good}</p>
+      <p>neutral: {clicks.neutral}</p>
+      <p>bad: {clicks.bad}</p>
+      <p>all feedbacks: {total}</p>
+      <p>average: {average}</p>
+      <p>positive feedback: {positive}%</p>
+    </div>
+  )
+}
+
+
 const App = () => {
-  const [good, setGood] = useState(0)
-  const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
-  const [allClicks, setAll] = useState(0)
-  const average = (good*1 + bad*-1)/allClicks
-  const positive = good/allClicks*100
+  const [allClicks, setClicks] = useState ({
+    good: 0, neutral: 0, bad: 0
+  })
 
   const handleGoodClick = () => {
-    console.log('good click', good)
-    setGood(good + 1)
-    setAll(allClicks + 1)
+    setClicks({...allClicks, good: allClicks.good + 1})
+    console.log('good clicks', allClicks.good)
   }
   const handleNeutralClick = () => {
-    console.log('neutral click', neutral)
-    setNeutral(neutral + 1)
-    setAll(allClicks + 1)
+    setClicks({...allClicks, neutral: allClicks.neutral + 1})
   }
   const handleBadClick = () => {
-    console.log('bad click', bad)
-    setBad(bad + 1)
-    setAll(allClicks + 1)
+    setClicks({...allClicks, bad: allClicks.bad + 1})
   }
 
   return (
@@ -33,13 +46,7 @@ const App = () => {
         <button onClick={handleBadClick}> bad</button>
       </div>
       <div>
-        <h2>statistics</h2>
-        <p>good: {good}</p>
-        <p>neutral: {neutral}</p>
-        <p>bad: {bad}</p>
-        <p>all: {allClicks}</p>
-        <p>average: {average}</p>
-        <p>positive: {positive} %</p>
+        <Statistics clicks={allClicks}/>
       </div>
     </div>
   )
