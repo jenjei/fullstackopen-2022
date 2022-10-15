@@ -7,6 +7,14 @@ const Statistics = ({clicks}) => {
 
   console.log('clicks', total)
 
+  if (total === 0) {
+    return (
+      <div>
+        <p>no feedback given</p>
+      </div>
+    )
+  }
+
   return (
     <div>
       <h2>statistics</h2>
@@ -32,9 +40,11 @@ const App = () => {
   }
   const handleNeutralClick = () => {
     setClicks({...allClicks, neutral: allClicks.neutral + 1})
+    console.log('neutral clicks', allClicks.neutral)
   }
   const handleBadClick = () => {
     setClicks({...allClicks, bad: allClicks.bad + 1})
+    console.log('bad clicks', allClicks.bad)
   }
 
   return (
