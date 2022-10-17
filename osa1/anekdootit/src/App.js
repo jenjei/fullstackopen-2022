@@ -24,6 +24,7 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(Array(9).fill(0)) // create a table with 9 elements filled with zeros
 
   const handleNextClick = () => {
     let random = Math.floor((Math.random() * 9))
@@ -31,11 +32,19 @@ const App = () => {
     console.log('selected', selected, anecdotes[selected])
   }
 
+  const handleVoteClick = () => {
+    const newVotes = [...votes] // create new votes table and copy original votes table there
+    newVotes[selected] += 1 // add one point to selected anecdote
+    setVotes(newVotes) // save new vote to original votes table
+    console.log('votes', votes) // check everything is ok
+  }
+
   return (
     <div>
       {anecdotes[selected]}
       <br/>
       <Button onClick={handleNextClick} text="next anecdote"/>
+      <Button onClick={handleVoteClick} text="vote" />
     </div>
   )
 }
