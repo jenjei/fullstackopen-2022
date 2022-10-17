@@ -26,25 +26,34 @@ const App = () => {
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(Array(9).fill(0)) // create a table with 9 elements filled with zeros
 
+  const highestVote = Math.max(...votes) // finding out the most voted anecdote
+  const winner = votes.indexOf(highestVote) // finding out index of the most voted anecdote
+
   const handleNextClick = () => {
     let random = Math.floor((Math.random() * 9))
     setSelected(random)
-    console.log('selected', selected, anecdotes[selected])
+    console.log('selected index:', selected, ", selected anecdote:" ,anecdotes[selected])
   }
 
   const handleVoteClick = () => {
     const newVotes = [...votes] // create new votes table and copy original votes table there
     newVotes[selected] += 1 // add one point to selected anecdote
     setVotes(newVotes) // save new vote to original votes table
-    console.log('votes', votes) // check everything is ok
+    console.log('votes', votes[selected]) // check everything is ok
   }
 
   return (
     <div>
-      {anecdotes[selected]}
+      <h1>Anecdote of the day is:</h1>
+      <h2>{anecdotes[selected]}</h2>
+      <p>This anecdote has {votes[selected]} votes.</p>
       <br/>
       <Button onClick={handleNextClick} text="next anecdote"/>
       <Button onClick={handleVoteClick} text="vote" />
+
+      <h2>Most voted anecdote is:</h2>
+      <h3>{anecdotes[winner]}</h3>
+      <p>Most voted anecdote has {votes[winner]} votes.</p>
     </div>
   )
 }
