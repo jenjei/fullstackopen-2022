@@ -10,6 +10,16 @@ const App = () => {
   const handleAddClick = (event) => {
     event.preventDefault() // preventing the page to refresh, not always necessary but keep this in mind :)
     console.log('set new name')
+
+    const found = persons.find(person => person.name === newName)
+    if (found) {
+      alert(
+        `${newName} is already added to the phonebook.`
+      )
+      setNewName('')
+      return
+    }
+
     const nameObject = {
       name: newName,
     }
