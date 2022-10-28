@@ -3,6 +3,7 @@ import Country from "./Country"
 const Countries = ({filter, countries}) => {
     const countriesFiltered = countries.filter(country =>
       country.name.official.toLowerCase().includes(filter.toLowerCase()))
+      
     
     if (countriesFiltered.length === 1) {
       return (
@@ -14,7 +15,8 @@ const Countries = ({filter, countries}) => {
       return (
         countriesFiltered.map(country =>
           <div key={country.name.official}>
-            <p>{country.name.official}</p>
+            <div>{country.name.official} <button>show</button>
+            </div>
           </div>
         )
       )

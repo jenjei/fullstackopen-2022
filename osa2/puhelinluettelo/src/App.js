@@ -1,5 +1,6 @@
 import PersonForm from './components/PersonForm'
 import Contacts from './components/Contacts'
+import Person from './components/Person'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
@@ -8,6 +9,10 @@ const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [newFilter, setNewFilter] = useState('')
+
+  const filteredPersons = persons.filter(person =>
+    person.name.toLowerCase().includes(newFilter.toLowerCase()))
 
   useEffect(() => {
     console.log('effect')
@@ -52,10 +57,13 @@ const App = () => {
     console.log(event.target.value)
     setNewNumber(event.target.value)
   }
+  const handleFilterChange = (event) => {
+    setNewFilter(event.target.value)
+  }
 
-  
-  return (
-    <div>
+  if (newFilter === '') {
+    return (
+      <div>
       <h2>Phonebook</h2>
 
       <PersonForm 
@@ -68,11 +76,32 @@ const App = () => {
 
       <h2>Numbers</h2>
       <div>
-        filter shown with <input placeholder={'search name'}></input>
+        filter shown with <input onChange={handleFilterChange} placeholder={'search name'}></input>
       </div>
       <Contacts persons={persons} />
     </div>
-  ) // to do: filtering contacts!
+    )
+  } else {
+    return (
+      <div>
+      <h2>Phonebook</h2>
+
+      <PersonForm 
+      handleNameChange={handleNameChange}
+      handleNumberChange={handleNumberChange}
+      newName={newName}
+      newNumber={newNumber}
+      handleAddClick={handleAddClick}
+      />
+
+      <h2>Numbers</h2>
+      <div>
+        filter shown with <input onChange={handleFilterChange} placeholder={'search name'}></input>
+      </div>
+      <Contacts persons={filteredPersons}/>
+    </div>
+    )
+  }
 }
 
 export default App

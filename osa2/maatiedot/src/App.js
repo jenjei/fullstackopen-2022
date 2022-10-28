@@ -8,7 +8,6 @@ import Countries from './components/Countries'
 const App = () => {
   const [countries, setCountries] = useState([]) // data from api
   const [countryFilter, setNewFilter] = useState('')
-  let arrayLength
 
 
   useEffect(() => { // fetching data with axios
