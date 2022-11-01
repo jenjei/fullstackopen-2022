@@ -3,7 +3,11 @@ import Country from "./Country"
 const Countries = ({filter, countries}) => {
     const countriesFiltered = countries.filter(country =>
       country.name.official.toLowerCase().includes(filter.toLowerCase()))
-      
+    
+    
+    const handleShowClick = ({}) => {
+
+    }
     
     if (countriesFiltered.length === 1) {
       return (
@@ -14,10 +18,10 @@ const Countries = ({filter, countries}) => {
     } else if (countriesFiltered.length <= 10) {
       return (
         countriesFiltered.map(country =>
-          <div key={country.name.official}>
-            <div>{country.name.official} <button>show</button>
-            </div>
-          </div>
+          <form key={country.name.official} value={country} onSubmit={handleShowClick}>
+            <p>{country.name.official} <button type='submit'>show</button>
+            </p>
+          </form>
         )
       )
     } else {

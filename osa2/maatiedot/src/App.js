@@ -11,11 +11,11 @@ const App = () => {
 
 
   useEffect(() => { // fetching data with axios
-    console.log('effect')
+    console.log('country effect')
     axios
       .get('https://restcountries.com/v3.1/all')
       .then(response => {
-        console.log('promise fulfilled')
+        console.log('country promise fulfilled')
         console.log(response.data)
         console.log('length', response.data.length)
         setCountries(response.data)
