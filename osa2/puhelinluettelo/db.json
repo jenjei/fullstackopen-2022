@@ -11,29 +11,24 @@
       "id": 3
     },
     {
-      "name": "niko",
-      "number": "666",
-      "id": 6
-    },
-    {
       "name": "jenni",
       "number": "123",
       "id": 7
     },
     {
-      "name": "helmi",
-      "number": "34545",
-      "id": 8
+      "name": "pekka",
+      "number": "3444",
+      "id": 11
     },
     {
-      "name": "sulo",
-      "number": "1",
-      "id": 9
+      "name": "maija",
+      "number": "555",
+      "id": 12
     },
     {
-      "name": "onni",
-      "number": "123",
-      "id": 10
+      "name": "maija",
+      "number": "5",
+      "id": 13
     }
   ]
 }

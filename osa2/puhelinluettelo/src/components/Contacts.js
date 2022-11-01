@@ -1,4 +1,5 @@
 import Person from './Person'
+import './components.css'
 
 const Contacts =({persons, deletePerson}) => {
     return (

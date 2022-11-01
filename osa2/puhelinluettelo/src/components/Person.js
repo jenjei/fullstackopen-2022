@@ -1,3 +1,4 @@
+import './components.css'
 
 const Person = ({person, deletePerson}) => {
   

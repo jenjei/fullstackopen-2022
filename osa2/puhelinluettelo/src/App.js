@@ -1,7 +1,8 @@
 import PersonForm from './components/PersonForm'
 import Contacts from './components/Contacts'
-import Person from './components/Person'
+import Notification from './components/Notification'
 import personService from './services/person'
+import './App.css'
 import { useState, useEffect } from 'react'
 
 
@@ -10,6 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [message, setMessage] = useState(null)
 
   const filteredPersons = persons.filter(person =>
     person.name.toLowerCase().includes(newFilter.toLowerCase()))
@@ -60,9 +62,13 @@ const App = () => {
       .create(nameObject)
       .then(response => {
         console.log('post', response)
+        setPersons(persons.concat(nameObject))
+        setMessage(`Added ${nameObject.name}`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 3000)
       })
 
-      setPersons(persons.concat(nameObject))
       console.log('names: ', {persons})
       setNewName('') // clearing the input field
       setNewNumber('')
@@ -100,7 +106,7 @@ const App = () => {
     return (
       <div>
       <h2>Phonebook</h2>
-
+      <Notification message={message} />
       <PersonForm 
       handleNameChange={handleNameChange}
       handleNumberChange={handleNumberChange}
@@ -111,7 +117,7 @@ const App = () => {
 
       <h2>Numbers</h2>
       <div>
-        filter shown with <input onChange={handleFilterChange} placeholder={'search name'}></input>
+        <p>filter shown with <input onChange={handleFilterChange} placeholder={'search name'}></input></p>
       </div>
       <Contacts persons={persons} deletePerson={deletePerson} />
     </div>
@@ -121,7 +127,7 @@ const App = () => {
     return (
       <div>
       <h2>Phonebook</h2>
-
+      <Notification message={message} />
       <PersonForm 
       handleNameChange={handleNameChange}
       handleNumberChange={handleNumberChange}
@@ -132,7 +138,7 @@ const App = () => {
 
       <h2>Numbers</h2>
       <div>
-        filter shown with <input onChange={handleFilterChange} placeholder={'search name'}></input>
+        <p>filter shown with <input onChange={handleFilterChange} placeholder={'search name'}></input></p>
       </div>
       <Contacts persons={filteredPersons} deletePerson={deletePerson}/>
     </div>

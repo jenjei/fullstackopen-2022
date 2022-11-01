@@ -1,13 +1,15 @@
+import './components.css'
 
 const PersonForm = ({handleAddClick, newName, newNumber, handleNameChange, handleNumberChange}) => {
     return (
       <form onSubmit={handleAddClick}>
           <div>
-            name: <input value={newName} onChange={handleNameChange} />
+            <p>name: <input value={newName} onChange={handleNameChange} /></p>
           </div>
-          <div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
           <div>
-            <button type="submit">add</button>
+            <p>number: <input value={newNumber} onChange={handleNumberChange}/></p></div>
+          <div>
+            <button className='add' type="submit">add</button>
           </div>
         </form>
     )

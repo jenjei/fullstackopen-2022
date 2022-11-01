@@ -1,0 +1,47 @@
+input {
+    margin-bottom: 20px;
+    margin-left: 50px;
+    border-radius: 5px;
+}
+button {
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 15px;
+    border-color: lightcoral;
+    background-color: seashell;
+    margin-left: 50px;
+}
+.add {
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 15px;
+    border-color: lightseagreen;
+    background-color: lightcyan;
+    margin-left: 50px;
+}
+h2 {
+    font-family: Arial Black;
+    font-size: xx-large;
+    margin-left: 50px;
+    margin-top: 50px;
+}
+p {
+    font-family: Arial;
+}
+ul {
+    margin-left: 10px;
+    font-family: Arial;
+}
+.error {
+    color: mediumaquamarine;
+    background: seashell;
+    text-align: center;
+    font-style: Arial;
+    font-size: 15px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    margin-left: 50px;
+    margin-right: 800px;
+  }
