@@ -1,7 +1,7 @@
 import PersonForm from './components/PersonForm'
 import Contacts from './components/Contacts'
+import personService from './services/person'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 
 
 const App = () => {
@@ -15,8 +15,8 @@ const App = () => {
 
   useEffect(() => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
+    personService
+      .getAll()
       .then(response => {
         console.log('promise fulfilled')
         setPersons(response.data)
@@ -41,8 +41,8 @@ const App = () => {
       name: newName,
       number: newNumber,
     }
-    axios
-      .post('http://localhost:3001/persons', nameObject)
+    personService
+      .create(nameObject)
       .then(response => {
         console.log('post', response)
       })
