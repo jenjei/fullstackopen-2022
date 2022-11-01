@@ -1,5 +1,6 @@
 import PersonForm from './components/PersonForm'
 import Contacts from './components/Contacts'
+import Person from './components/Person'
 import personService from './services/person'
 import { useState, useEffect } from 'react'
 
@@ -53,6 +54,19 @@ const App = () => {
     setNewNumber('')
   }
 
+  const deletePerson = (id) => {
+    console.log('delete person')
+    const filteredPerson = persons.filter(person => person.id === id)
+    const personName = filteredPerson[0].name
+    const personId = filteredPerson[0].id
+    if (window.confirm(`Delete ${personName} ?`)) {
+      personService
+        .remove(personId)
+      console.log(`${personName} successfully deleted`)
+      setPersons(persons.filter(person => person.id !== personId))
+    }
+  }
+
 
   const handleNameChange = (event) => {
     console.log(event.target.value)
@@ -83,7 +97,7 @@ const App = () => {
       <div>
         filter shown with <input onChange={handleFilterChange} placeholder={'search name'}></input>
       </div>
-      <Contacts persons={persons} />
+      <Contacts persons={persons} deletePerson={deletePerson} />
     </div>
     )
   } else {
@@ -103,7 +117,7 @@ const App = () => {
       <div>
         filter shown with <input onChange={handleFilterChange} placeholder={'search name'}></input>
       </div>
-      <Contacts persons={filteredPersons}/>
+      <Contacts persons={filteredPersons} deletePerson={deletePerson}/>
     </div>
     )
   }
