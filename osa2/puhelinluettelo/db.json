@@ -11,19 +11,29 @@
       "id": 3
     },
     {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": 4
+      "name": "niko",
+      "number": "666",
+      "id": 6
     },
     {
       "name": "jenni",
-      "number": "304958",
-      "id": 5
+      "number": "123",
+      "id": 7
     },
     {
-      "name": "niko",
-      "number": "3294857",
-      "id": 6
+      "name": "helmi",
+      "number": "34545",
+      "id": 8
+    },
+    {
+      "name": "sulo",
+      "number": "1",
+      "id": 9
+    },
+    {
+      "name": "onni",
+      "number": "123",
+      "id": 10
     }
   ]
 }

@@ -24,34 +24,49 @@ const App = () => {
       })
   }, [])
 
+
   const handleAddClick = (event) => {
     event.preventDefault() // preventing the page to refresh, not always necessary but keep this in mind :)
     console.log('set new name')
-
-    const found = persons.find(person => person.name === newName)
-    if (found) {
-      alert(
-        `${newName} is already added to the phonebook.`
-      )
-      setNewName('')
-      setNewNumber('')
-      return
-    }
 
     const nameObject = {
       name: newName,
       number: newNumber,
     }
-    personService
+
+    // if new name is included to phonebook:
+    const found = persons.find(person => person.name === newName)
+    if (found) {
+      if (window.confirm(`${newName} is already added to the phonebook, replace the old number with new one?`)) {
+        const filteredPerson = persons.filter(person => person.name === newName)
+        const personId = filteredPerson[0].id
+        personService
+          .update(personId, nameObject)
+        console.log(`${newName} successfully updated`)
+        setNewName('')
+        setNewNumber('')
+        setTimeout(() => window.location.reload(), 2000) // refresh page after 2 secs
+        return
+      } else {
+        setNewName('')
+        setNewNumber('')
+        return
+      }
+    }
+
+    // if new name is not included to phonebook:
+    if(!found) {
+      personService
       .create(nameObject)
       .then(response => {
         console.log('post', response)
       })
 
-    setPersons(persons.concat(nameObject))
-    console.log('names: ', {persons})
-    setNewName('') // clearing the input field
-    setNewNumber('')
+      setPersons(persons.concat(nameObject))
+      console.log('names: ', {persons})
+      setNewName('') // clearing the input field
+      setNewNumber('')
+    }
   }
 
   const deletePerson = (id) => {
@@ -80,6 +95,7 @@ const App = () => {
     setNewFilter(event.target.value)
   }
 
+  // if filter is empty:
   if (newFilter === '') {
     return (
       <div>
@@ -100,6 +116,7 @@ const App = () => {
       <Contacts persons={persons} deletePerson={deletePerson} />
     </div>
     )
+    // if filter is not empty:
   } else {
     return (
       <div>
