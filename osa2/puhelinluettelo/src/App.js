@@ -12,6 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
   const [message, setMessage] = useState(null)
+  const [messageType, setMessageType] = useState('')
 
   const filteredPersons = persons.filter(person =>
     person.name.toLowerCase().includes(newFilter.toLowerCase()))
@@ -44,6 +45,18 @@ const App = () => {
         const personId = filteredPerson[0].id
         personService
           .update(personId, nameObject)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => person.name != newName ? person : returnedPerson))
+          })
+          .catch(error => {
+            setMessageType('error')
+            setMessage(`The person '${newName}' was already deleted from server`)
+            setTimeout(() => {
+              setMessage(null)
+              setMessageType('')
+            }, 3000)
+          })
+          setPersons(persons.filter(person => person.name !== newName))
         console.log(`${newName} successfully updated`)
         setNewName('')
         setNewNumber('')
@@ -63,6 +76,7 @@ const App = () => {
       .then(response => {
         console.log('post', response)
         setPersons(persons.concat(nameObject))
+        setMessageType('success')
         setMessage(`Added ${nameObject.name}`)
         setTimeout(() => {
           setMessage(null)
@@ -106,7 +120,7 @@ const App = () => {
     return (
       <div>
       <h2>Phonebook</h2>
-      <Notification message={message} />
+      <Notification message={message} type={messageType} />
       <PersonForm 
       handleNameChange={handleNameChange}
       handleNumberChange={handleNumberChange}
@@ -127,7 +141,7 @@ const App = () => {
     return (
       <div>
       <h2>Phonebook</h2>
-      <Notification message={message} />
+      <Notification message={message} type={messageType} />
       <PersonForm 
       handleNameChange={handleNameChange}
       handleNumberChange={handleNumberChange}
