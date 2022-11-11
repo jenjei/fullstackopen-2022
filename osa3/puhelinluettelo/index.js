@@ -39,6 +39,18 @@ let persons = [
     + '<p></p>' + Date())
   })
 
+  // creating api endpoint for one contact
+  app.get('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id) // Number for turning string to int
+    const person = persons.find(person => person.id === id)
+    
+    if (person) {
+        response.json(person)
+      } else {
+        response.status(404).end() // id not found :(
+      }
+  })
+
 const PORT = 3001
 app.listen(PORT)
 console.log(`Server running on port ${PORT}`)
