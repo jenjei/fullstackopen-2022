@@ -7,8 +7,9 @@ const Country = ({country}) => {
   const capital_url = country.capital
   const complete_weather_url = base_url + capital_url + '&appid=' + api_key
   const [weather, setWeather] = useState([]) // api data
-  // var icon_code = weather.weather[0].icon
-  // const complete_icon_url = 'http://openweathermap.org/img/wn/' + icon_code +'@2x.png'
+  const [icon_code, setIcon] = useState('50n')
+  let complete_icon_url = 'http://openweathermap.org/img/wn/' + icon_code +'@2x.png'
+
 
   useEffect(() => { // fetching data with axios
     console.log('weather effect')
@@ -18,6 +19,7 @@ const Country = ({country}) => {
         console.log('weather promise fulfilled')
         console.log(response.data)
         setWeather(response.data)
+        setIcon(response.data.weather[0].icon)
       })
   }, [])
 
@@ -33,8 +35,8 @@ const Country = ({country}) => {
         <img src={country.flags.png}></img>
         <h3>Current weather</h3>
         <p>Temperature: {(weather.main?.temp - 273.15).toFixed(1)} Celcius </p>
-        <img></img>
         <p>Wind {weather.wind?.speed} m/s</p>
+        <img src={complete_icon_url} ></img>
       </div>
     )
 }
