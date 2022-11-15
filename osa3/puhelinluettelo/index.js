@@ -34,7 +34,7 @@ let persons = [
     res.json(persons)
   })
 
-  app.get('/api/info', (req, res) => {
+  app.get('/info', (req, res) => {
     res.send('<p>Phonebook has info for ' + persons.length + ' people.</p>'
     + '<p></p>' + Date())
   })
@@ -49,6 +49,14 @@ let persons = [
       } else {
         response.status(404).end() // id not found :(
       }
+  })
+
+  // deleting one contact
+  app.delete('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    persons = persons.filter(person => person.id !== id)
+  
+    response.status(204).end()
   })
 
 const PORT = 3001
