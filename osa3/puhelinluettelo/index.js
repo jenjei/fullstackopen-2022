@@ -35,7 +35,7 @@ let persons = [
     response.json(persons)
   })
 
-  app.get('/info', (requeste, response) => {
+  app.get('/info', (request, response) => {
     response.send('<p>Phonebook has info for ' + persons.length + ' people.</p>'
     + '<p></p>' + Date())
   })
@@ -61,7 +61,9 @@ let persons = [
   })
 
   const generateId = (min, max) => {
-    return Math.random() * (max - min) + min
+    min = Math.ceil(min)
+    max = Math.floor(max)
+    return Math.floor(Math.random() * (max - min) + min)
   }
 
   // creating new person
@@ -77,6 +79,13 @@ let persons = [
     if (!body.number) { // jos numero puuttuu, niin anna error viesti
       return response.status(400).json({
         error: 'number missing'
+      })
+    }
+
+    const found = persons.find(person => person.name===body.name)
+    if(found) {
+      return response.status(400).json({
+        error: 'name must be unique'
       })
     }
   
