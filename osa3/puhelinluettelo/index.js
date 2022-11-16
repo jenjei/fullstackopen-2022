@@ -5,7 +5,7 @@ const morgan = require('morgan') // https://github.com/expressjs/morgan document
 const app = express()
 
 app.use(express.json())
-app.use(morgan('tiny'))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body')) // tiny format with custom token :body
 
 let persons = [
   { 
@@ -100,8 +100,9 @@ let persons = [
 
     persons = persons.concat(person)
 
-    console.log(person)
+    // console.log(person) -> unnecessary when using morgan
     response.json(person)
+    morgan.token('body', (req) => JSON.stringify(req.body))
   })
 
 const PORT = 3001
