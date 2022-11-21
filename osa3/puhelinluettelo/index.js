@@ -30,81 +30,83 @@ let persons = [
   }
 ]
 
-  app.get('/', (request, response) => {
-    response.send('<h1>Hello World!</h1>')
-  })
+app.get('/', (request, response) => {
+  response.send('<h1>Hello World!</h1>')
+})
   
-  app.get('/api/persons', (request, response) => {
-    response.json(persons)
-  })
+app.get('/api/persons', (request, response) => {
+  response.json(persons)
+})
 
-  app.get('/info', (request, response) => {
-    response.send('<p>Phonebook has info for ' + persons.length + ' people.</p>'
-    + '<p></p>' + Date())
-  })
+app.get('/info', (request, response) => {
+  response.send('<p>Phonebook has info for ' + persons.length + ' people.</p>'
+  + '<p></p>' + Date())
+})
 
-  // creating api endpoint for one contact
-  app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id) // Number for turning string to int
-    const person = persons.find(person => person.id === id)
+// creating api endpoint for one contact
+app.get('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id) // Number for turning string to int
+  const person = persons.find(person => person.id === id)
     
-    if (person) {
-        response.json(person)
-      } else {
-        response.status(404).end() // id not found :(
-      }
-  })
+  if (person) {
+      response.json(person)
+    } else {
+      response.status(404).end() // id not found :(
+    }
+})
 
-  // deleting one contact
-  app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    persons = persons.filter(person => person.id !== id)
-  
-    response.status(204).end()
-  })
+// deleting one contact
+app.delete('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  persons = persons.filter(person => person.id !== id)
 
-  const generateId = (min, max) => {
-    min = Math.ceil(min)
-    max = Math.floor(max)
-    return Math.floor(Math.random() * (max - min) + min)
+  response.status(204).end()
+})
+
+const generateId = (min, max) => {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min) + min)
+}
+
+// creating new person
+app.post('/api/persons', (request, response) => {
+  const body = request.body
+
+  if (!body.name) { // jos nimi puuttuu, niin anna error viesti
+    return response.status(400).json({ 
+      error: 'name missing' 
+    })
   }
 
-  // creating new person
-  app.post('/api/persons', (request, response) => {
-    const body = request.body
+  if (!body.number) { // jos numero puuttuu, niin anna error viesti
+    return response.status(400).json({
+      error: 'number missing'
+    })
+  }
 
-    if (!body.name) { // jos nimi puuttuu, niin anna error viesti
-      return response.status(400).json({ 
-        error: 'name missing' 
-      })
-    }
-
-    if (!body.number) { // jos numero puuttuu, niin anna error viesti
-      return response.status(400).json({
-        error: 'number missing'
-      })
-    }
-
-    const found = persons.find(person => person.name===body.name)
-    if(found) {
-      return response.status(400).json({
-        error: 'name must be unique'
-      })
-    }
+  const found = persons.find(person => person.name===body.name)
+  if(found) {
+    return response.status(400).json({
+      error: 'name must be unique'
+    })
+  }
   
-    const person = {
-      name: body.name,
-      number: body.number,
-      id: generateId(5, 100000000)
-    }
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: generateId(5, 100000000)
+  }
 
-    persons = persons.concat(person)
+  persons = persons.concat(person)
 
-    // console.log(person) -> unnecessary when using morgan
-    response.json(person)
-    morgan.token('body', (req) => JSON.stringify(req.body))
-  })
+  // console.log(person) -> unnecessary when using morgan
+  response.json(person)
+  morgan.token('body', (req) => JSON.stringify(req.body))
 
-const PORT = 3001
-app.listen(PORT)
-console.log(`Server running on port ${PORT}`)
+})
+
+const PORT = process.env.PORT || 3001
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
