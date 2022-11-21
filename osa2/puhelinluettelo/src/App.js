@@ -14,8 +14,7 @@ const App = () => {
   const [message, setMessage] = useState(null)
   const [messageType, setMessageType] = useState('')
 
-  const filteredPersons = persons.filter(person =>
-    person.name.toLowerCase().includes(newFilter.toLowerCase()))
+  const filteredPersons = persons?.filter(person => person.name.toLowerCase().includes(newFilter.toLowerCase()))
 
   useEffect(() => {
     console.log('effect')
