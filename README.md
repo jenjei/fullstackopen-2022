@@ -6,11 +6,14 @@ ReactJS https://reactjs.org
 
 Node.js https://nodejs.org/en/
 
-Heroku https://www.heroku.com
+Fly https://fly.io --- ( Heroku https://www.heroku.com )
 
 Postman https://www.postman.com/ 
+
+MongoDB https://www.mongodb.com/atlas/database
 
 
 # What was hard? How could I improve my skills?
 
-..
+Debugging is hard from time to time. It should improve over time. I suppose. Love the problem not the solution :)
+

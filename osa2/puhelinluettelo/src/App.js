@@ -14,7 +14,7 @@ const App = () => {
   const [message, setMessage] = useState(null)
   const [messageType, setMessageType] = useState('')
 
-  const filteredPersons = persons?.filter(person => person.name.toLowerCase().includes(newFilter.toLowerCase()))
+  const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(newFilter.toLowerCase()))
 
   useEffect(() => {
     console.log('effect')
@@ -46,20 +46,33 @@ const App = () => {
           .update(personId, nameObject)
           .then(returnedPerson => {
             setPersons(persons.map(person => person.name != newName ? person : returnedPerson))
+            setPersons(persons.filter(person => person.name !== newName))
+            console.log(`${newName} successfully updated`)
+            window.location.reload()
           })
           .catch(error => {
+            if(error.response.status===400) {
+              //setPersons(persons.filter(person => person.name !== newName))
+              setMessage(error.response.data.error)
+              setMessageType('error')
+              setTimeout(() => {
+                setMessage(null)
+                setMessageType('')
+              }, 3000)
+            } else {
             setMessageType('error')
             setMessage(`The person '${newName}' was already deleted from server`)
             setTimeout(() => {
               setMessage(null)
               setMessageType('')
             }, 3000)
-          })
-          setPersons(persons.filter(person => person.name !== newName))
-        console.log(`${newName} successfully updated`)
+          }})
+        //setPersons(persons.filter(person => person.name !== newName))
+        //console.log(`${newName} successfully updated`)
         setNewName('')
         setNewNumber('')
-        setTimeout(() => window.location.reload(), 2000) // refresh page after 2 secs
+        //window.location.reload()
+        //setTimeout(() => window.location.reload(), 2000) // refresh page after 2 secs
         return
       } else {
         setNewName('')
@@ -79,6 +92,14 @@ const App = () => {
         setMessage(`Added ${nameObject.name}`)
         setTimeout(() => {
           setMessage(null)
+        }, 3000)
+      }).catch(error => {
+        console.log('error', error.response.data.error)
+        setMessageType('error')
+        setMessage(error.response.data.error)
+        setTimeout(() => {
+          setMessage(null)
+          setMessageType('')
         }, 3000)
       })
 
