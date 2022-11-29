@@ -1,0 +1,32 @@
+{
+  "blogs": [
+    {
+      "author": "Nalle Puh",
+      "title": "Tarinoita Puolenhehtaarin metsästä",
+      "url": "www.google.com",
+      "likes": 8,
+      "id": 1
+    },
+    {
+      "author": "Peter Pan",
+      "title": "Mikä on Mikä-mikä-maa",
+      "url": "www.google.com",
+      "likes": 4,
+      "id": 2
+    },
+    {
+      "author": "muumimamma",
+      "title": "maailman parhaat pannarit",
+      "url": "google.com",
+      "likes": 1,
+      "id": 3
+    },
+    {
+      "author": "teletappi",
+      "title": "missä on nuunuu",
+      "url": "google.com",
+      "likes": 0,
+      "id": 4
+    }
+  ]
+}
