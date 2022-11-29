@@ -1,0 +1,20 @@
+body {
+    background-color: lightblue;
+    font-family:'Courier New', Courier, monospace
+}
+
+input {
+    margin-bottom: 20px;
+    margin-left: 50px;
+    border-radius: 5px;
+    border-color:blanchedalmond;
+}
+
+button {
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 15px;
+    border-color: green;
+    background-color: seashell;
+    margin-left: 50px;
+}
