@@ -1,18 +1,10 @@
 import { useState, useEffect } from "react"
 import './App.css'
 import blogService from './services/blog'
-import axios from "axios"
-import blog from "./services/blog"
+
 
 function App() {
-  const [blogs, setBlogs] = useState([
-    {
-      author: 'Nalle Puh',
-      title: 'Tarinoita Puolenhehtaarin metsästä',
-      url: 'www.google.com',
-      likes: 5
-    }
-  ])
+  const [blogs, setBlogs] = useState([])
   const [newAuthor, setNewAuthor] = useState('')
   const [newTitle, setNewTitle] = useState('')
   const [newUrl, setNewUrl] = useState('')
