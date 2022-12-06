@@ -65,10 +65,26 @@ test('all blogs are returned', async () => {
 test('a specific blog is within the returned blogs', async () => {
   const response = await api.get('/api/blogs')
   const contents = response.body.map(r => r.title)
-
   expect(contents).toContain(
     'maailman parhaat pannarit'
   )
+})
+
+test('identifier is id not _id', async() => {
+    const doc = await Blog.findOne({})
+    let mykeys = Object.keys(doc.toObject())
+    console.log('keys', mykeys) // keys [ '_id', 'title', 'author', 'url', 'likes', '__v' ]
+
+    const dok = await Blog.updateMany( {}, { $rename: { "_id": "id" } } ) // comes with following error: MongoServerError: Performing an update on the path '_id' would modify the immutable field '_id'
+
+    let myNewKeys = Object.keys(dok.toObject())
+    console.log('new keys', myNewKeys)
+
+    const response = await api.get('/api/blogs')
+    console.log('response',response.body) // these id:s are in format of 'id'
+    const identifiers = response.body.map(id => id.id)
+    console.log('identifiers', identifiers)
+    expect(identifiers).toBeDefined()
 })
 
 afterAll(() => {
