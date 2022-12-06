@@ -33,15 +33,33 @@ const favoriteBlog = (blogs) => {
 // this function returns author with most blogs written
 const authorWithMostBlogs = (blogs) => {
     var authorsByBlogAmounts = _.countBy(blogs, 'author') // reorganising authors by blog count
-    var mostBlogs = _.max(_.values(authorsByBlogAmounts)) // finding out who has the most blogs authored
-    var author = _.findKey(authorsByBlogAmounts, (key) => key === mostBlogs)
-    console.log('he/she authored most blogs:', author, mostBlogs)
+    var mostBlogs = _.max(_.values(authorsByBlogAmounts)) // finding out amount of most authored blogs
+    var author = _.findKey(authorsByBlogAmounts, (key) => key === mostBlogs) // finding out who is the author of most blogs
+    console.log('authors by blog amounts', authorsByBlogAmounts)
     return { author: author, blogs: mostBlogs }
+}
+
+// this function returns author with most likes
+const authorWithMostLikes = (blogs) => {
+    var likesSummedByAuthor = _(blogs)
+    .groupBy('author') // first grouping blogs by authors
+    .map((objs, key) => {
+    return {
+        'author': key,
+        'likes': _.sumBy(objs, 'likes') // ...then calculating likes
+    }})
+    .value() // returns array of [{author,likes},{author,likes},{author,likes}]
+    const favoriteAuthor = likesSummedByAuthor.reduce(function(prev, current) {
+        return (prev.likes > current.likes) ? prev : current }) // finding favorite author same way like favorite blog
+    console.log('favorite author', favoriteAuthor)
+
+    return favoriteAuthor
 }
 
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  authorWithMostBlogs
+  authorWithMostBlogs,
+  authorWithMostLikes
 }
