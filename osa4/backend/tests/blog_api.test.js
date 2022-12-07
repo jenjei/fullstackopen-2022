@@ -91,8 +91,9 @@ test('identifier is id not _id', async() => {
   expect(identifiers).toBeDefined()
 })
 
-// testing put route
+// testing post route
 describe('testing put route', () => {
+    // testing that post can be done
   test('a valid blog can be added ', async () => {
     const newBlog = {
       title: 'squarepants',
@@ -116,6 +117,22 @@ describe('testing put route', () => {
       'squarepants'
     )
   })
+// testing that likes are zero
+  test('if the new blog has not any likes, likes are zero', async () => {
+    const newBlog = {
+        title: 'asdf',
+        author: 'asdf',
+        url: 'asdf'
+    }
+
+    await api
+    .post('/api/blogs')
+    .send(newBlog)
+    
+    const response = await api.get('/api/blogs')
+    const likes = response.body.map(r => r.likes)
+    expect(likes[likes.length - 1]).toEqual(0)
+  }) 
 })
 
 afterAll(() => {
