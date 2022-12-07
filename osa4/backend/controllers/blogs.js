@@ -1,13 +1,13 @@
 // all routes in this file!
 
 const blogsRouter = require('express').Router()
+const { response } = require('../app')
 const Blog = require('../models/blog')
 
 // GET all blogs
-blogsRouter.get('/', (req, res) => {
-  Blog.find({}).then(blogs => {
-    res.json(blogs)
-  })
+blogsRouter.get('/', async(req, res) => {
+  const blogs = await Blog.find({})
+  res.json(blogs)
 })
 
 // GET one blog
