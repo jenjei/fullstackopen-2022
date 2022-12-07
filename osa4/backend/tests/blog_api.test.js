@@ -4,47 +4,17 @@ const app = require('../app')
 
 const api = supertest(app)
 const Blog = require('../models/blog')
-
-const initialBlogs = [
-  {
-    author: 'Nalle Puh',
-    title: 'Tarinoita Puolenhehtaarin metsästä',
-    url: 'www.google.com',
-    likes: 8,
-    id: 1
-  },
-  {
-    author: 'Peter Pan',
-    title: 'Mikä on Mikä-mikä-maa',
-    url: 'www.google.com',
-    likes: 4,
-    id: 2
-  },
-  {
-    author: 'muumimamma',
-    title: 'maailman parhaat pannarit',
-    url: 'google.com',
-    likes: 5,
-    id: 3
-  },
-  {
-    author: 'teletappi',
-    title: 'missä on nuunuu',
-    url: 'google.com',
-    likes: 0,
-    id: 4
-  }
-]
+const helper = require('./test_helper')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-  let blogObject = new Blog(initialBlogs[0])
+  let blogObject = new Blog(helper.initialBlogs[0])
   await blogObject.save()
-  blogObject = new Blog(initialBlogs[1])
+  blogObject = new Blog(helper.initialBlogs[1])
   await blogObject.save()
-  blogObject = new Blog(initialBlogs[2])
+  blogObject = new Blog(helper.initialBlogs[2])
   await blogObject.save()
-  blogObject = new Blog(initialBlogs[3])
+  blogObject = new Blog(helper.initialBlogs[3])
   await blogObject.save()
 })
 
@@ -61,7 +31,7 @@ describe('testing get blogs route', () => {
   // testing that there is right amount of blog objects
   test('all blogs are returned', async () => {
     const response = await api.get('/api/blogs')
-    expect(response.body).toHaveLength(initialBlogs.length)
+    expect(response.body).toHaveLength(helper.initialBlogs.length)
   })
 
   // testing specific blog title
@@ -92,8 +62,8 @@ test('identifier is id not _id', async() => {
 })
 
 // testing post route
-describe('testing put route', () => {
-    // testing that post can be done
+describe('testing put blog route', () => {
+  // testing that post can be done
   test('a valid blog can be added ', async () => {
     const newBlog = {
       title: 'squarepants',
@@ -108,31 +78,83 @@ describe('testing put route', () => {
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
-    const response = await api.get('/api/blogs')
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 
-    const titles = response.body.map(r => r.title)
-
-    expect(response.body).toHaveLength(initialBlogs.length + 1)
-    expect(titles).toContain(
-      'squarepants'
-    )
+    const titles = blogsAtEnd.map(r => r.title)
+    expect(titles).toContain('squarepants')
   })
-// testing that likes are zero
+  // testing that likes are zero
   test('if the new blog has not any likes, likes are zero', async () => {
     const newBlog = {
-        title: 'asdf',
-        author: 'asdf',
-        url: 'asdf'
+      title: 'asdf',
+      author: 'asdf',
+      url: 'asdf'
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+
+    const response = await helper.blogsInDb()
+    const likes = response.map(r => r.likes)
+    expect(likes[likes.length - 1]).toEqual(0)
+  })
+  // testing that new blog has title and url
+  test('if the new blog hasnt title and/or url, response is bad request 400', async() => {
+    const newBlog = {
+        title: 'must have title',
+        author: 'must have author', // url is missing here!
+        likes: 0
     }
 
     await api
     .post('/api/blogs')
     .send(newBlog)
-    
-    const response = await api.get('/api/blogs')
-    const likes = response.body.map(r => r.likes)
-    expect(likes[likes.length - 1]).toEqual(0)
-  }) 
+    .expect(400) // expect bad request
+
+    const response = await helper.blogsInDb()
+    expect(response.length).toEqual(helper.initialBlogs.length) // and check that new blog is not saved to db
+  })
+})
+
+// testing delete route
+describe('testing delete route', async() => {
+    test('a blog can be deleted', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const blogToDelete = blogsAtStart[0]
+      
+        await api
+          .delete(`/api/blogs/${blogToDelete.id}`)
+          .expect(204)
+      
+        const blogsAtEnd = await helper.blogsInDb()
+      
+        expect(blogsAtEnd).toHaveLength(
+          helper.initialBlogs.length - 1
+        )
+      
+        const contents = blogsAtEnd.map(r => r.title)
+      
+        expect(contents).not.toContain(blogToDelete.title)
+      })
+})
+
+describe('testing get one blog by id route', async() => {
+    test('a specific blog can be viewed', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+      
+        const blogToView = blogsAtStart[0]
+      
+        const resultBlog = await api
+          .get(`/api/blogs/${blogToView.id}`)
+          .expect(200)
+          .expect('Content-Type', /application\/json/)
+      
+        const processedBlogToView = JSON.parse(JSON.stringify(blogToView))
+      
+        expect(resultBlog.body).toEqual(processedBlogToView)
+      })
 })
 
 afterAll(() => {

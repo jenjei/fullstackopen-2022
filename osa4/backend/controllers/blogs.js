@@ -1,7 +1,6 @@
 // all routes in this file!
 
 const blogsRouter = require('express').Router()
-const { response } = require('../app')
 const Blog = require('../models/blog')
 
 // GET all blogs
@@ -34,20 +33,26 @@ blogsRouter.put('/:id', (request, response, next) => {
 })
 
 // POST, create new blog to the list
-blogsRouter.post('/', (request, response) => {
-
+blogsRouter.post('/', async(request, response, next) => {
   const blog = new Blog(request.body)
 
   if (blog.likes === undefined) {
     blog.likes = 0
   }
-
-  blog
-    .save()
-    .then(result => {
-      response.status(201).json(result)
-      console.log(result)
-    })
+  
+  if (blog.title === undefined || blog.url === undefined) {
+    response.status(400).end()
+  }
+  else {
+    try {
+      const savedBlog = await blog.save()
+      response.status(201).json(savedBlog)
+      console.log(savedBlog)
+    } catch (exception) {
+      next(exception)
+    }
+  }
+  
 })
 
 module.exports = blogsRouter
