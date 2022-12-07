@@ -119,7 +119,7 @@ describe('testing put blog route', () => {
 })
 
 // testing delete route
-describe('testing delete route', async() => {
+describe('testing delete route', () => {
     test('a blog can be deleted', async () => {
         const blogsAtStart = await helper.blogsInDb()
         const blogToDelete = blogsAtStart[0]
@@ -130,20 +130,16 @@ describe('testing delete route', async() => {
       
         const blogsAtEnd = await helper.blogsInDb()
       
-        expect(blogsAtEnd).toHaveLength(
-          helper.initialBlogs.length - 1
-        )
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
       
         const contents = blogsAtEnd.map(r => r.title)
-      
         expect(contents).not.toContain(blogToDelete.title)
       })
 })
 
-describe('testing get one blog by id route', async() => {
+describe('testing get one blog by id route', () => {
     test('a specific blog can be viewed', async () => {
         const blogsAtStart = await helper.blogsInDb()
-      
         const blogToView = blogsAtStart[0]
       
         const resultBlog = await api
@@ -152,7 +148,6 @@ describe('testing get one blog by id route', async() => {
           .expect('Content-Type', /application\/json/)
       
         const processedBlogToView = JSON.parse(JSON.stringify(blogToView))
-      
         expect(resultBlog.body).toEqual(processedBlogToView)
       })
 })

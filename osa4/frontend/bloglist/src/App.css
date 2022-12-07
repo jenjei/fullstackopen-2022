@@ -7,7 +7,7 @@ h1 {
     font-size: xx-large;
     margin: 50px;
 }
-p, a, h2 {
+p, a, h2, b {
     margin-left: 50px;
 }
 input {
@@ -28,6 +28,9 @@ button {
 .likebutton {
     border-color: lightcoral;
 }
+.deletebutton {
+    border-color: lightgrey;
+}
 .liketext {
     font-size: small;
 }
@@ -39,4 +42,13 @@ button {
     border-style: solid;
     margin: 50px;
     padding: 20px;
+    padding-bottom: 50px;
+    overflow: auto;
+}
+.textdiv {
+    border-style: solid black;
+    border-width: 3px;
+}
+.box-align-right {
+    text-align: right;
 }

@@ -63,6 +63,18 @@ function App() {
     })
   }
 
+  const handleDeleteClick = (id) => {
+    console.log('clicked delete', id)
+    const filteredBlog = blogs.filter(blog => blog.id === id)
+    const blogTitle = filteredBlog[0].title
+    const blogId = filteredBlog[0].id
+    if (window.confirm(`Delete ${blogTitle} ?`)) {
+      blogService
+        .remove(blogId)
+      console.log(`${blogTitle} successfully deleted`)
+      setBlogs(blogs.filter(blog => blog.id !== blogId))
+    }
+  }
 
   const handleAuthorChange = (event) => {
     console.log(event.target.value)
@@ -77,7 +89,7 @@ function App() {
     setNewUrl(event.target.value)
   }
 
-
+// to do: divide to react components
   return (
     <div className="App">
       <h1>Blogs</h1>
@@ -90,11 +102,15 @@ function App() {
       </form>
       <h2>All Blogs</h2>
       <div>
-        {blogs.map((blog, id) => <div key={id} className="box"> 
-        <p><b>{blog.title}</b> by {blog.author}</p>
-         <a href={blog.url}>{blog.url}</a>
-         <p className="liketext">Likes {blog.likes}</p>
-         <button className="likebutton" onClick={() => handleLikeClick(blog.title)}>Like ♥</button>
+        {blogs.map((blog, id) => <div key={id} className="box">
+        <div className="box-align-right"><button className="deletebutton" onClick={() => handleDeleteClick(blog.id)}>x</button></div>
+        <div className="textdiv">
+          <b>{blog.title}</b>
+          <p>by {blog.author}</p>
+          <a href={blog.url}>{blog.url}</a>
+          <p className="liketext">Likes {blog.likes}</p>
+          </div>
+          <button className="likebutton" onClick={() => handleLikeClick(blog.title)}>♥</button>
       </div>)}
       </div>
     </div>
