@@ -103,15 +103,15 @@ describe('testing put blog route', () => {
   // testing that new blog has title and url
   test('if the new blog hasnt title and/or url, response is bad request 400', async() => {
     const newBlog = {
-        title: 'must have title',
-        author: 'must have author', // url is missing here!
-        likes: 0
+      title: 'must have title',
+      author: 'must have author', // url is missing here!
+      likes: 0
     }
 
     await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(400) // expect bad request
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400) // expect bad request
 
     const response = await helper.blogsInDb()
     expect(response.length).toEqual(helper.initialBlogs.length) // and check that new blog is not saved to db
@@ -120,37 +120,57 @@ describe('testing put blog route', () => {
 
 // testing delete route
 describe('testing delete route', () => {
-    test('a blog can be deleted', async () => {
-        const blogsAtStart = await helper.blogsInDb()
-        const blogToDelete = blogsAtStart[0]
-      
-        await api
-          .delete(`/api/blogs/${blogToDelete.id}`)
-          .expect(204)
-      
-        const blogsAtEnd = await helper.blogsInDb()
-      
-        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
-      
-        const contents = blogsAtEnd.map(r => r.title)
-        expect(contents).not.toContain(blogToDelete.title)
-      })
+  test('a blog can be deleted', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+
+    const contents = blogsAtEnd.map(r => r.title)
+    expect(contents).not.toContain(blogToDelete.title)
+  })
 })
 
 describe('testing get one blog by id route', () => {
-    test('a specific blog can be viewed', async () => {
-        const blogsAtStart = await helper.blogsInDb()
-        const blogToView = blogsAtStart[0]
-      
-        const resultBlog = await api
-          .get(`/api/blogs/${blogToView.id}`)
-          .expect(200)
-          .expect('Content-Type', /application\/json/)
-      
-        const processedBlogToView = JSON.parse(JSON.stringify(blogToView))
-        expect(resultBlog.body).toEqual(processedBlogToView)
-      })
+  test('a specific blog can be viewed', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToView = blogsAtStart[0]
+
+    const resultBlog = await api
+      .get(`/api/blogs/${blogToView.id}`)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const processedBlogToView = JSON.parse(JSON.stringify(blogToView))
+    expect(resultBlog.body).toEqual(processedBlogToView)
+  })
 })
+
+describe('testing put route', () => {
+  test('a specific blog can be liked', async() => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToLike = blogsAtStart[0]
+
+    const likedBlog = {
+      title: blogToLike.title,
+      author: blogToLike.author,
+      url: blogToLike.url,
+      likes: blogToLike.likes + 1
+    }
+
+    await api
+    .put(`/api/blogs/${blogToLike.id}`)
+    .send(likedBlog)
+    
+    expect(likedBlog.likes).toEqual(blogsAtStart[0].likes + 1)
+  })
+}) 
 
 afterAll(() => {
   mongoose.connection.close()
