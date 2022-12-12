@@ -1,9 +1,10 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InF1ZWVuMTIzIiwiaWQiOiI2Mzk2ZDdiNDU0YjE2YWMzMmJmZDk3YzciLCJpYXQiOjE2NzA4NDUxNDl9.YX5bxaK8CHl4u4nopNmsrDlso_2QFbDkT4gbBGuTP-o
 
 {
-    "author": "Ville Vallaton",
-    "title": "icecream",
-    "url": "llllllll",
+    "author": "WiseMan",
+    "title": "Very wise blog",
+    "url": "google.com",
     "likes": 0
 }
