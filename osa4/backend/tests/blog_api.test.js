@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
 const supertest = require('supertest')
+const mongoose = require('mongoose')
 const app = require('../app')
 
 const api = supertest(app)
@@ -8,14 +8,7 @@ const helper = require('./test_helper')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-  let blogObject = new Blog(helper.initialBlogs[0])
-  await blogObject.save()
-  blogObject = new Blog(helper.initialBlogs[1])
-  await blogObject.save()
-  blogObject = new Blog(helper.initialBlogs[2])
-  await blogObject.save()
-  blogObject = new Blog(helper.initialBlogs[3])
-  await blogObject.save()
+  await Blog.insertMany(helper.initialBlogs)
 })
 
 // testing get route
@@ -165,12 +158,12 @@ describe('testing put route', () => {
     }
 
     await api
-    .put(`/api/blogs/${blogToLike.id}`)
-    .send(likedBlog)
-    
+      .put(`/api/blogs/${blogToLike.id}`)
+      .send(likedBlog)
+
     expect(likedBlog.likes).toEqual(blogsAtStart[0].likes + 1)
   })
-}) 
+})
 
 afterAll(() => {
   mongoose.connection.close()
