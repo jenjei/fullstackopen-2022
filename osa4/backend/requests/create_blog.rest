@@ -1,10 +1,10 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InF1ZWVuMTIzIiwiaWQiOiI2Mzk2ZDdiNDU0YjE2YWMzMmJmZDk3YzciLCJpYXQiOjE2NzA4NDUxNDl9.YX5bxaK8CHl4u4nopNmsrDlso_2QFbDkT4gbBGuTP-o
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InF1ZWVuMTIzIiwiaWQiOiI2Mzk2ZDdiNDU0YjE2YWMzMmJmZDk3YzciLCJpYXQiOjE2NzA4NTE4NTh9.ij0dMlBPBsLwJWli7b3G1gXNYtB5dM9Ay_IOSu6_7qQ
 
 {
-    "author": "WiseMan",
-    "title": "Very wise blog",
+    "author": "WiseManlet",
+    "title": "Christmas is coming to town",
     "url": "google.com",
     "likes": 0
 }
