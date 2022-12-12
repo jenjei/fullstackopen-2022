@@ -35,13 +35,15 @@ blogsRouter.put('/:id', async(request, response) => {
 blogsRouter.post('/', async(request, response) => {
   const body = request.body
 
-  const user = await User.findById(body.userId)
+  const user = await User.findById("6396d7b454b16ac32bfd97c7")
+  // const user = await User.findById(body.userId)
+  console.log('user',user)
   
   const blog = new Blog({
     title: body.title,
     url: body.url,
     author: body.author,
-    user: user._id
+    user: user.id
   })
 
   if (blog.likes === undefined) {
@@ -53,7 +55,7 @@ blogsRouter.post('/', async(request, response) => {
   }
   else {
     const savedBlog = await blog.save()
-    user.notes = user.notes.concat(savedNote._id)
+    user.blogs = user.blogs.concat(savedBlog._id)
     await user.save()
     response.status(201).json(savedBlog)
     console.log(savedBlog)

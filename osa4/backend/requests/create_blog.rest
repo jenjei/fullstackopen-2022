@@ -2,8 +2,8 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-    "author": "aaaaa",
-    "title": "nnnnnn",
+    "author": "Ville Vallaton",
+    "title": "icecream",
     "url": "llllllll",
     "likes": 0
 }
