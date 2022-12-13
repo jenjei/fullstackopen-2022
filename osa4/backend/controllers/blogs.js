@@ -45,7 +45,7 @@ blogsRouter.post('/', async(request, response) => {
   }
 
   const user = await User.findById(decodedToken.id)
-  // const user = await User.findById(body.userId)
+
   console.log('user',user)
   
   const blog = new Blog({
@@ -73,9 +73,29 @@ blogsRouter.post('/', async(request, response) => {
 
 // DELETE, delete blog by id
 blogsRouter.delete('/:id', async(request, response) => {
+  /* (route for: anyone can delete blogs:)
   const blogToDelete = await Blog.findByIdAndRemove(request.params.id)
   console.log('deleted', blogToDelete)
   response.status(204).end()
+  */
+  const blogtoDelete = await Blog.findById(request.params.id) // searching the blog from db with request id
+  console.log('BLOG TO DELETE', blogtoDelete)
+
+  const decodedToken = jwt.verify(request.token, process.env.SECRET) // finding out if someone is logged in
+  console.log('TOKEN', decodedToken)
+  if (!request.token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' }) // give error message if not logged in
+  }
+  const user = await User.findById(decodedToken.id) // finding the right user from db
+  console.log('USER', user)
+
+  if ( blogtoDelete.user.toString() === user.id.toString() ) { // if collections' identifiers match...
+    await Blog.findByIdAndDelete(request.params.id) // ...the blog is to be deleted (from Phonebook.blogs collection)
+    console.log('deleted', blogtoDelete)
+    response.status(204).end()
+  } else { // if collections' identifiers dont match blog is not deleted from db
+    return response.status(401).json({ error: 'You are not able to delete this blog. This blog is added by some other user.'})
+  } // PROBLEM: everything is deleted correctly but if you check from mongoDB, every deleted blog id is still stored to Phonebook.users blogs -array as ObjectIds
 })
 
 module.exports = blogsRouter

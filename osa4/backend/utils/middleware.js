@@ -3,7 +3,6 @@
 const logger = require('./logger')
 
 const tokenExtractor = (request, response, next) => {
-  // tokenin ekstraktoiva koodi
   const authorization = request.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     console.log('substring', authorization.substring(7))
