@@ -1,6 +1,8 @@
 // middlewares and errorhandlers in this file!
 
 const logger = require('./logger')
+const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 
 const tokenExtractor = (request, response, next) => {
   const authorization = request.get('authorization')
@@ -8,6 +10,21 @@ const tokenExtractor = (request, response, next) => {
     console.log('substring', authorization.substring(7))
     request.token = authorization.substring(7)
   }
+  next()
+}
+
+const userExtractor = async(request, response, next) => {
+  console.log('user extractor')
+  const decodedToken = jwt.verify(request.token, process.env.SECRET) // finding out if someone is logged in
+  console.log('TOKEN', decodedToken)
+  if (!request.token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' }) // give error message if not logged in
+  }
+
+  const user = await User.findById(decodedToken.id) // finding the right user from db
+  console.log('REQ USER', request.user)
+  request.user = user
+
   next()
 }
 
@@ -41,5 +58,6 @@ module.exports = {
   requestLogger,
   unknownEndpoint,
   errorHandler,
-  tokenExtractor
+  tokenExtractor,
+  userExtractor
 }

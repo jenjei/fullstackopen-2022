@@ -2,9 +2,7 @@
 
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
-const User = require('../models/user')
-const jwt = require('jsonwebtoken')
-const blog = require('../models/blog')
+const { userExtractor } = require('../utils/middleware')
 
 // GET all blogs
 blogsRouter.get('/', async(req, res) => {
@@ -34,20 +32,14 @@ blogsRouter.put('/:id', async(request, response) => {
 })
 
 // POST, create new blog to the list
-blogsRouter.post('/', async(request, response) => {
+blogsRouter.post('/', userExtractor, async(request, response) => {
   const body = request.body
 
   console.log('The token', request.token)
 
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  if (!request.token || !decodedToken.id) {
-    return response.status(401).json({ error: 'token missing or invalid' })
-  }
+  const user = request.user
+  console.log('user', user)
 
-  const user = await User.findById(decodedToken.id)
-
-  console.log('user',user)
-  
   const blog = new Blog({
     title: body.title,
     url: body.url,
@@ -72,29 +64,19 @@ blogsRouter.post('/', async(request, response) => {
 })
 
 // DELETE, delete blog by id
-blogsRouter.delete('/:id', async(request, response) => {
-  /* (route for: anyone can delete blogs:)
-  const blogToDelete = await Blog.findByIdAndRemove(request.params.id)
-  console.log('deleted', blogToDelete)
-  response.status(204).end()
-  */
+blogsRouter.delete('/:id', userExtractor, async(request, response) => {
   const blogtoDelete = await Blog.findById(request.params.id) // searching the blog from db with request id
   console.log('BLOG TO DELETE', blogtoDelete)
 
-  const decodedToken = jwt.verify(request.token, process.env.SECRET) // finding out if someone is logged in
-  console.log('TOKEN', decodedToken)
-  if (!request.token || !decodedToken.id) {
-    return response.status(401).json({ error: 'token missing or invalid' }) // give error message if not logged in
-  }
-  const user = await User.findById(decodedToken.id) // finding the right user from db
-  console.log('USER', user)
+  console.log('request user', request.user)
+  const user = request.user // searching the user from db with userExtractor middleware
 
   if ( blogtoDelete.user.toString() === user.id.toString() ) { // if collections' identifiers match...
-    await Blog.findByIdAndDelete(request.params.id) // ...the blog is to be deleted (from Phonebook.blogs collection)
+    await Blog.findByIdAndDelete(request.params.id) // ...the blog is deleted (from Phonebook.blogs collection)
     console.log('deleted', blogtoDelete)
     response.status(204).end()
   } else { // if collections' identifiers dont match blog is not deleted from db
-    return response.status(401).json({ error: 'You are not able to delete this blog. This blog is added by some other user.'})
+    return response.status(401).json({ error: 'You are not able to delete this blog. This blog is added by some other user.' })
   } // PROBLEM: everything is deleted correctly but if you check from mongoDB, every deleted blog id is still stored to Phonebook.users blogs -array as ObjectIds
 })
 

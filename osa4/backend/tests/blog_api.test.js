@@ -55,7 +55,7 @@ test('identifier is id not _id', async() => {
   expect('id' in identifiers)
 })
 
-// testing post route 
+// testing post route
 describe('testing put blog route', () => {
   // testing that post can be done
   test('a valid blog can be added ', async () => {
@@ -64,7 +64,7 @@ describe('testing put blog route', () => {
       author: 'spongebob',
       url: 'google.com',
       likes: 0,
-      id: "6396d7b454b16ac32bfd97c7"
+      id: '6396d7b454b16ac32bfd97c7'
     }
 
     await api
