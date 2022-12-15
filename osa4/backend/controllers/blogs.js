@@ -34,8 +34,7 @@ blogsRouter.put('/:id', async(request, response) => {
 // POST, create new blog to the list
 blogsRouter.post('/', userExtractor, async(request, response) => {
   const body = request.body
-
-  console.log('The token', request.token)
+  console.log('body', body)
 
   const user = request.user
   console.log('user', user)

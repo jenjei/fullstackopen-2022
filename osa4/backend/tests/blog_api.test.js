@@ -5,10 +5,41 @@ const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
 const helper = require('./test_helper')
+const User = require('../models/user')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
   await Blog.insertMany(helper.initialBlogs)
+  await User.deleteMany({})
+  await User.insertMany(helper.initialUsers) // problem here: doesnt create passwordHash to db
+})
+
+describe('signing up and logging in', () => { // this test is successful :)
+  test('returns a 201 on successful signup', async () => {
+    await api
+      .post('/api/users')
+      .send({
+        username: 'test',
+        name: 'test bot',
+        password: 'password'
+      })
+      .expect(201)
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(helper.initialUsers.length + 1)
+
+    const users = usersAtEnd.map(r => r.username)
+    expect(users).toContain('test')
+  })
+  test('returns 200 on successful login', async() => { // comes with error: expected 200 "OK", got 500 "Internal Server Error"
+    await api
+      .post('/api/login')
+      .send({
+        username: 'meh',
+        password: 'asdf1234'
+      })
+      .expect(200)
+  })
 })
 
 // testing get route
@@ -56,9 +87,9 @@ test('identifier is id not _id', async() => {
 })
 
 // testing post route
-describe('testing put blog route', () => {
+describe('testing post blog route', () => {
   // testing that post can be done
-  test('a valid blog can be added ', async () => {
+  test('a valid blog can be added ', async () => { // comes with error: expected 201 "Created", got 401 "Unauthorized"
     const newBlog = {
       title: 'squarepants',
       author: 'spongebob',
@@ -96,7 +127,7 @@ describe('testing put blog route', () => {
     expect(likes[likes.length - 1]).toEqual(0)
   })
   // testing that new blog has title and url
-  test('if the new blog hasnt title and/or url, response is bad request 400', async() => {
+  test('if the new blog hasnt title and/or url, response is bad request 400', async() => { // comes with error: expected 400 "Bad Request", got 401 "Unauthorized"
     const newBlog = {
       title: 'must have title',
       author: 'must have author', // url is missing here!
@@ -115,7 +146,9 @@ describe('testing put blog route', () => {
 
 // testing delete route
 describe('testing delete route', () => {
-  test('a blog can be deleted', async () => {
+  test('a blog can be deleted', async () => { // comes with error: expected 204 "No Content", got 401 "Unauthorized"
+    helper.logIn()
+
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
 
