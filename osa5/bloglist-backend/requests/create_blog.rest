@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Implbm5pYXlsaXMiLCJpZCI6IjYzOWM2MWU1NDM5YWY3ZmJmNDczOTllMCIsImlhdCI6MTY3MTE5NDA0M30.gDiWT0JAjY2ZZSfWNfh1j00znguMC-A3N0JRzUJu8Ak
+
+{
+    "author": "Lauri Kieksi",
+    "title": "Low-codella on helppo tehdä vaikeakäyttöisiä mobiilisovelluksia",
+    "url": "https://www.solita.fi/blogit/low-codella-on-helppo-tehda-vaikeakayttoisia-mobiilisovelluksia/",
+    "likes": 0
+}
