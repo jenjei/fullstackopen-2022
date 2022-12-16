@@ -1,0 +1,26 @@
+.success {
+    color: green;
+    background: seashell;
+    text-align: center;
+    font-style: Arial;
+    font-size: 15px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+.error {
+    color: red;
+    background: seashell;
+    text-align: center;
+    font-style: Arial;
+    font-size: 15px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    margin-left: 50px;
+    margin-right: 50px;
+}

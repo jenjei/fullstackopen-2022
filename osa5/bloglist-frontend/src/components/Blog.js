@@ -1,4 +1,4 @@
-import './Blog.css'
+import './blog.css'
 
 const Blog = ({blog, handleLikeClick, handleDeleteClick}) => (
   <div className="box">
