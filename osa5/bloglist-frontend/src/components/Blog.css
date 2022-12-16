@@ -1,0 +1,54 @@
+body {
+    background-color: lightblue;
+    font-family: Arial;
+}
+h1 {
+    font-family: Arial Black;
+    font-size: xx-large;
+    margin: 50px;
+}
+p, a, h2, b, h3 {
+    margin-left: 50px;
+}
+input {
+    margin-bottom: 20px;
+    margin-left: 50px;
+    border-radius: 5px;
+    border-color: skyblue;
+}
+
+button {
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 15px;
+    border-color: skyblue;
+    background-color: seashell;
+    margin-left: 50px;
+}
+.likebutton {
+    border-color: lightcoral;
+}
+.deletebutton {
+    border-color: lightgrey;
+}
+.liketext {
+    font-size: small;
+}
+.box {
+    background-color: aliceblue;
+    border-radius: 50px;
+    border-width: 2px;
+    border-color: white;
+    border-style: solid;
+    margin: 50px;
+    padding: 20px;
+    padding-bottom: 50px;
+    overflow: auto;
+}
+.textdiv {
+    border-style: solid black;
+    border-width: 3px;
+}
+.box-align-right {
+    text-align: right;
+}

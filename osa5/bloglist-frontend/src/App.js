@@ -5,7 +5,9 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [newBlog, setNewBlog] = useState('')
+  const [newAuthor, setNewAuthor] = useState('')
+  const [newTitle, setNewTitle] = useState('')
+  const [newUrl, setNewUrl] = useState('')
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
@@ -16,8 +18,9 @@ const App = () => {
     .then(blogs => setBlogs( blogs ))  
   }, [])
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+  useEffect(async() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    console.log(loggedUserJSON)
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
@@ -29,7 +32,7 @@ const App = () => {
     <form onSubmit={handleLogin}>
       <h2>Login</h2>
       <div>
-        username: <input
+        <p>username: </p><input
           type="text"
           value={username}
           name="Username"
@@ -37,7 +40,7 @@ const App = () => {
         />
       </div>
       <div>
-        password: <input
+        <p>password: </p><input
           type="password"
           value={password}
           name="Password"
@@ -48,20 +51,71 @@ const App = () => {
     </form>      
   )
 
+  const handleAddBlogClick = async(event) => {
+    event.preventDefault();
+
+    const blogObject = {
+      author: newAuthor,
+      title: newTitle,
+      url: newUrl,
+      likes: 0,
+    }
+
+    await blogService.create(blogObject)
+      console.log('post', blogObject)
+      setBlogs(blogs.concat(blogObject))
+      setNewAuthor('')
+      setNewTitle('')
+      setNewUrl('')
+    console.log('blogs:', blogs)
+  }
+
+  const handleDeleteClick = (id) => {
+    console.log('clicked delete', id)
+    const filteredBlog = blogs.filter(blog => blog.id === id)
+    const blogTitle = filteredBlog[0].title
+    const blogId = filteredBlog[0].id
+    if (window.confirm(`Delete ${blogTitle} ?`)) {
+      blogService
+        .remove(blogId)
+      console.log(`${blogTitle} successfully deleted`)
+      setBlogs(blogs.filter(blog => blog.id !== blogId))
+    }
+  }
+
   const blogForm = () => (
-    <form>
+    <form onSubmit={handleAddBlogClick}>
       <h3>add new blog</h3>
       <input
-        value={newBlog}
-        onChange={handleBlogChange}
+        value={newAuthor}
+        onChange={handleAuthorChange}
+        placeholder='author'
+      />
+      <input
+        value={newTitle}
+        onChange={handleTitleChange}
         placeholder='title'
       />
-      <button type="submit">save</button>
+      <input
+        value={newUrl}
+        onChange={handleUrlChange}
+        placeholder='url'
+      />
+      <button type="submit">add</button>
     </form>
   )
 
-  const handleBlogChange = () => {
-
+  const handleAuthorChange = (event) => {
+    console.log(event.target.value)
+    setNewAuthor(event.target.value)
+  }
+  const handleTitleChange = (event) => {
+    console.log(event.target.value)
+    setNewTitle(event.target.value)
+  }
+  const handleUrlChange = (event) => {
+    console.log(event.target.value)
+    setNewUrl(event.target.value)
   }
 
   const handleLogin = async(event) => {
@@ -73,16 +127,25 @@ const App = () => {
         username, password,
       })
       window.localStorage.setItem(
-        'loggedNoteappUser', JSON.stringify(user)
-      ) 
+        'loggedBlogappUser', JSON.stringify(user)
+      )
+      blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
+      console.log('username and password', username, password)
     } catch (exception) {
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
     }
+  }
+
+  const handleLogout = async(event) => {
+    console.log('log out clicked')
+    window.localStorage.clear()
+    blogService.setToken(null)
+    window.location.reload()
   }
 
   return (
@@ -91,9 +154,10 @@ const App = () => {
     loginForm() :
       <div>
         <p>{user.name} logged in</p>
+        <button onClick={() => handleLogout()}>log out</button>
         {blogForm()}
-        <h2>blogs</h2>
-        {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+        <h2>all blogs</h2>
+        {blogs.map((blog, id) => <Blog key={id} blog={blog} handleDeleteClick={handleDeleteClick} handleAddBlogClick={handleAddBlogClick} />)}
       </div>
     }
     </div>
