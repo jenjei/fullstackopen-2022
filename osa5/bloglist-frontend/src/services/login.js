@@ -6,4 +6,8 @@ const login = async credentials => {
   return response.data
 }
 
-export default { login }
+const exportedObject = { // because of warning: "Assign object to a variable before exporting as module default"
+  login
+}
+
+export default exportedObject

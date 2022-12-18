@@ -31,4 +31,12 @@ const remove = (id) => {
   return request.then(response => response.data)
 }
 
-export default { getAll, create, update, setToken, remove }
+const exportedObject = { // because of warning: "Assign object to a variable before exporting as module default"
+  getAll,
+  create,
+  update,
+  setToken,
+  remove
+}
+
+export default exportedObject

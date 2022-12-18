@@ -3,24 +3,23 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import AddBlogForm from './components/AddBlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [newAuthor, setNewAuthor] = useState('')
-  const [newTitle, setNewTitle] = useState('')
-  const [newUrl, setNewUrl] = useState('')
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [messageType, setMessageType] = useState('') // message types: success => green, error => red
+  const [addBlogVisible, setAddBlogVisible] = useState(false)
 
   useEffect(() => {
     blogService.getAll()
     .then(blogs => setBlogs( blogs ))  
   }, [])
 
-  useEffect(async() => {
+  useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     console.log(loggedUserJSON)
     if (loggedUserJSON) {
@@ -54,54 +53,26 @@ const App = () => {
     </form>      
   )
 
-  const blogForm = () => (
-    <form onSubmit={handleAddBlogClick}>
-      <h3>add new blog</h3>
-      <Notification message={errorMessage} type={messageType}/>
-      <input
-        value={newAuthor}
-        onChange={handleAuthorChange}
-        placeholder='author'
-      />
-      <input
-        value={newTitle}
-        onChange={handleTitleChange}
-        placeholder='title'
-      />
-      <input
-        value={newUrl}
-        onChange={handleUrlChange}
-        placeholder='url'
-      />
-      <button type="submit">add</button>
-    </form>
-  )
+  const blogForm = () => {
+    const hideWhenVisible = { display: addBlogVisible ? 'none' : '' }
+    const showWhenVisible = { display: addBlogVisible ? '' : 'none' }
 
-  const handleAddBlogClick = async(event) => {
-    event.preventDefault();
-
-    const blogObject = {
-      author: newAuthor,
-      title: newTitle,
-      url: newUrl,
-      likes: 0,
-    }
-
-    await blogService.create(blogObject)
-    console.log('post', blogObject)
-    setBlogs(blogs.concat(blogObject))
-    setNewAuthor('')
-    setNewTitle('')
-    setNewUrl('')
-    setErrorMessage(`Added ${blogObject.title}`)
-    console.log('error message', errorMessage)
-    setMessageType('success')
-    setTimeout(() => {
-      setErrorMessage(null)
-      setMessageType('')
-    }, 5000)
-    console.log('blogs:', blogs)
+    return (
+      <div>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setAddBlogVisible(true)}>add new blog</button>
+        </div>
+        <div style={showWhenVisible}>
+          <AddBlogForm 
+          blogs={blogs}
+          setBlogs={setBlogs}
+          />
+          <button onClick={() => setAddBlogVisible(false)}>cancel</button>
+        </div>
+      </div>
+    )
   }
+
 
   const handleDeleteClick = (id) => {
     console.log('clicked delete', id)
@@ -134,18 +105,6 @@ const App = () => {
     setBlogs(blogs.map(blog => blog.id !== likedBlog[0].id ? blog : changedBlog))
   }
 
-  const handleAuthorChange = (event) => {
-    console.log(event.target.value)
-    setNewAuthor(event.target.value)
-  }
-  const handleTitleChange = (event) => {
-    console.log(event.target.value)
-    setNewTitle(event.target.value)
-  }
-  const handleUrlChange = (event) => {
-    console.log(event.target.value)
-    setNewUrl(event.target.value)
-  }
 
   const handleLogin = async(event) => {
     event.preventDefault()
