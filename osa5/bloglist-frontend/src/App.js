@@ -4,6 +4,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import AddBlogForm from './components/AddBlogForm'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -12,7 +13,6 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [messageType, setMessageType] = useState('') // message types: success => green, error => red
-  const [addBlogVisible, setAddBlogVisible] = useState(false)
 
   useEffect(() => {
     blogService.getAll()
@@ -53,26 +53,13 @@ const App = () => {
     </form>      
   )
 
-  const blogForm = () => {
-    const hideWhenVisible = { display: addBlogVisible ? 'none' : '' }
-    const showWhenVisible = { display: addBlogVisible ? '' : 'none' }
-
-    return (
-      <div>
-        <div style={hideWhenVisible}>
-          <button onClick={() => setAddBlogVisible(true)}>add new blog</button>
-        </div>
-        <div style={showWhenVisible}>
-          <AddBlogForm 
-          blogs={blogs}
-          setBlogs={setBlogs}
-          />
-          <button onClick={() => setAddBlogVisible(false)}>cancel</button>
-        </div>
-      </div>
-    )
+  const addBlog = (blogObject) => {
+    blogService
+      .create(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+      })
   }
-
 
   const handleDeleteClick = (id) => {
     console.log('clicked delete', id)
@@ -146,7 +133,12 @@ const App = () => {
       <div>
         <p>{user.name} logged in</p>
         <button onClick={() => handleLogout()}>log out</button>
-        {blogForm()}
+        <Togglable buttonLabel="add new blog">
+          <AddBlogForm 
+            createBlog={addBlog}
+            onSubmit={addBlog}
+          />
+        </Togglable>
         <h2>all blogs</h2>
         {blogs.map((blog, id) => <Blog key={id} blog={blog} handleDeleteClick={handleDeleteClick} handleLikeClick={handleLikeClick} />)}
       </div>

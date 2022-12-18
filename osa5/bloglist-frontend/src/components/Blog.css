@@ -34,7 +34,7 @@ button {
 .liketext {
     font-size: small;
 }
-.box {
+.box-expanded {
     background-color: aliceblue;
     border-radius: 50px;
     border-width: 2px;
@@ -45,10 +45,43 @@ button {
     padding-bottom: 50px;
     overflow: auto;
 }
+.box {
+    background-color: aliceblue;
+    border-radius: 50px;
+    border-width: 2px;
+    border-color: white;
+    border-style: solid;
+    margin: 50px;
+    padding: 20px;
+    padding-bottom: 50px;
+    padding-top: 50px;
+    overflow: auto;
+}
 .textdiv {
     border-style: solid black;
     border-width: 3px;
 }
 .box-align-right {
     text-align: right;
+}
+.collapsible {
+    background-color: aliceblue;
+    color: darkcyan;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+}
+.active, .collapsible:hover {
+    background-color: lightblue;
+}
+
+.content {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    background-color: #f1f1f1;
 }

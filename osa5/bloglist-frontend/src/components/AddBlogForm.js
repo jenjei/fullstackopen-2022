@@ -1,8 +1,7 @@
 import Notification from './Notification'
-import blogService from '../services/blogs'
 import { useState } from 'react'
 
-const AddBlogForm = ( {blogs, setBlogs} ) => {
+const AddBlogForm = ( {createBlog} ) => {
 
     const [newAuthor, setNewAuthor] = useState('')
     const [newTitle, setNewTitle] = useState('')
@@ -13,15 +12,15 @@ const AddBlogForm = ( {blogs, setBlogs} ) => {
     const handleAuthorChange = (event) => {
         console.log(event.target.value)
         setNewAuthor(event.target.value)
-      }
-      const handleTitleChange = (event) => {
+    }
+    const handleTitleChange = (event) => {
         console.log(event.target.value)
         setNewTitle(event.target.value)
-      }
-      const handleUrlChange = (event) => {
+    }
+    const handleUrlChange = (event) => {
         console.log(event.target.value)
         setNewUrl(event.target.value)
-      }
+    }
 
     const handleAddBlogClick = async(event) => {
         event.preventDefault();
@@ -33,9 +32,7 @@ const AddBlogForm = ( {blogs, setBlogs} ) => {
           likes: 0,
         }
     
-        await blogService.create(blogObject)
-        console.log('post', blogObject)
-        setBlogs(blogs.concat(blogObject))
+        createBlog(blogObject)
         setNewAuthor('')
         setNewTitle('')
         setNewUrl('')
@@ -46,8 +43,9 @@ const AddBlogForm = ( {blogs, setBlogs} ) => {
           setErrorMessage(null)
           setMessageType('')
         }, 5000)
-        console.log('blogs:', blogs)
-      }
+    }
+
+
     return (
         <form onSubmit={handleAddBlogClick}>
             <h3>add new blog</h3>
