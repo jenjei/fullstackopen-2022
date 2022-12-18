@@ -1,4 +1,3 @@
-import Notification from './Notification'
 import { useState } from 'react'
 
 const AddBlogForm = ( {createBlog} ) => {
@@ -6,8 +5,6 @@ const AddBlogForm = ( {createBlog} ) => {
     const [newAuthor, setNewAuthor] = useState('')
     const [newTitle, setNewTitle] = useState('')
     const [newUrl, setNewUrl] = useState('')
-    const [errorMessage, setErrorMessage] = useState(null)
-    const [messageType, setMessageType] = useState('')
 
     const handleAuthorChange = (event) => {
         console.log(event.target.value)
@@ -36,20 +33,12 @@ const AddBlogForm = ( {createBlog} ) => {
         setNewAuthor('')
         setNewTitle('')
         setNewUrl('')
-        setErrorMessage(`Added ${blogObject.title}`)
-        console.log('error message', errorMessage)
-        setMessageType('success')
-        setTimeout(() => {
-          setErrorMessage(null)
-          setMessageType('')
-        }, 5000)
     }
 
 
     return (
         <form onSubmit={handleAddBlogClick}>
             <h3>add new blog</h3>
-            <Notification message={errorMessage} type={messageType}/>
             <input
               value={newAuthor}
               onChange={handleAuthorChange}

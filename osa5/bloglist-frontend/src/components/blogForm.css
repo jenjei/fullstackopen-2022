@@ -1,0 +1,12 @@
+.add-blog-form {
+    background-color: aliceblue;
+    border-radius: 50px;
+    border-width: 2px;
+    border-color: white;
+    border-style: solid;
+    margin: 50px;
+    padding: 20px;
+    padding-bottom: 50px;
+    padding-top: 50px;
+    overflow: auto;
+}

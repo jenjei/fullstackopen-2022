@@ -20,7 +20,7 @@ const Blog = ({blog, handleLikeClick, handleDeleteClick}) => {
         <a href={blog.url}>{blog.url}</a>
         <p className="liketext">Likes {blog.likes}</p>
       </div>
-      <button className="likebutton" onClick={() => handleLikeClick(blog.title)}>♥</button>
+      <button className="likebutton" onClick={() => handleLikeClick(blog.id)}>♥</button>
     </div>
     </div>
   )

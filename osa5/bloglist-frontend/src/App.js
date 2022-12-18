@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import './app.css'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -13,6 +14,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [messageType, setMessageType] = useState('') // message types: success => green, error => red
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll()
@@ -54,11 +56,19 @@ const App = () => {
   )
 
   const addBlog = (blogObject) => {
+    blogFormRef.current.toggleVisibility()
     blogService
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
+        setErrorMessage(`Added ${blogObject.title}`)
       })
+    setMessageType('success')
+    setTimeout(() => {
+      setErrorMessage(null)
+      setMessageType('')
+      console.log('timeout')
+    }, 5000)
   }
 
   const handleDeleteClick = (id) => {
@@ -74,22 +84,24 @@ const App = () => {
     }
   }
 
-  const handleLikeClick = async(name) => {
-    console.log('clicked like to', name)
-    const likedBlog = blogs.filter(blog => blog.title===name)
-    console.log('liked blog', likedBlog[0])
-    const likes = likedBlog[0].likes + 1
+  const handleLikeClick = (id) => {
+    console.log('clicked like to', id)
+    const findLikedBlog = blogs.filter(blog => blog.id===id)
+    const likedBlog = findLikedBlog[0]
+    console.log('liked blog', likedBlog)
+    const likes = likedBlog.likes + 1
     console.log('new likes', likes)
+    let userId = likedBlog.user.id // without this, everything will fail with "(type Object) at path "user" because of "BSONTypeError" "
 
-    const changedBlog = {
-      author: likedBlog[0].author,
-      title: likedBlog[0].title,
-      url: likedBlog[0].url,
-      likes: likes
+    if (userId === undefined) {
+      userId = likedBlog.user
     }
+    const changedBlog = {...likedBlog, user: userId, likes: likes} // must update userid and likes
 
-    await blogService.update(likedBlog[0].id, changedBlog)
-    setBlogs(blogs.map(blog => blog.id !== likedBlog[0].id ? blog : changedBlog))
+    console.log('changed blog', changedBlog)
+
+    blogService.update(likedBlog.id, changedBlog)
+    .then(setBlogs(blogs.map(blog => blog.id !== likedBlog.id ? blog : changedBlog)))
   }
 
 
@@ -132,11 +144,12 @@ const App = () => {
     loginForm() :
       <div>
         <p>{user.name} logged in</p>
-        <button onClick={() => handleLogout()}>log out</button>
-        <Togglable buttonLabel="add new blog">
+        <button className='logout-button' onClick={() => handleLogout()}>log out</button>
+        <div> <br /> </div>
+        <Notification message={errorMessage} type={messageType}/>
+        <Togglable buttonLabel="add new blog" ref={blogFormRef}>
           <AddBlogForm 
             createBlog={addBlog}
-            onSubmit={addBlog}
           />
         </Togglable>
         <h2>all blogs</h2>
