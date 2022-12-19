@@ -23,7 +23,7 @@ const App = () => {
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    console.log(loggedUserJSON)
+    console.log('logged user', loggedUserJSON)
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
@@ -68,6 +68,7 @@ const App = () => {
       setErrorMessage(null)
       setMessageType('')
       console.log('timeout')
+      window.location.reload() // without this reload, new blog doesnt render who added the blog and delete button is not showed
     }, 5000)
   }
 
@@ -76,6 +77,7 @@ const App = () => {
     const filteredBlog = blogs.filter(blog => blog.id === id)
     const blogTitle = filteredBlog[0].title
     const blogId = filteredBlog[0].id
+    
     if (window.confirm(`Delete ${blogTitle} ?`)) {
       blogService
         .remove(blogId)
@@ -111,7 +113,7 @@ const App = () => {
 
     try {
       const user = await loginService.login({
-        username, password,
+        username, password
       })
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
@@ -155,7 +157,13 @@ const App = () => {
         <h2>all blogs</h2>
         {blogs
         .sort((a, b) => b.likes - a.likes)
-        .map((blog, id) => <Blog key={id} blog={blog} handleDeleteClick={handleDeleteClick} handleLikeClick={handleLikeClick} />)}
+        .map((blog, id) => 
+        <Blog key={id} 
+        blog={blog} 
+        user={user}
+        handleDeleteClick={handleDeleteClick} 
+        handleLikeClick={handleLikeClick} 
+        />)}
       </div>
     }
     </div>

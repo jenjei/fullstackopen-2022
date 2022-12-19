@@ -31,6 +31,9 @@ button {
 .deletebutton {
     border-color: lightgrey;
 }
+.no-delete-button {
+    padding-top: 30px;
+}
 .liketext {
     font-size: small;
 }
