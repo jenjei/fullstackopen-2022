@@ -9,8 +9,8 @@ import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('') 
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [messageType, setMessageType] = useState('') // message types: success => green, error => red
@@ -18,7 +18,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll()
-    .then(blogs => setBlogs( blogs ))
+      .then(blogs => setBlogs( blogs ))
   }, [])
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const App = () => {
         />
       </div>
       <button type="submit">login</button>
-    </form>      
+    </form>
   )
 
   const addBlog = (blogObject) => {
@@ -76,7 +76,7 @@ const App = () => {
     const filteredBlog = blogs.filter(blog => blog.id === id)
     const blogTitle = filteredBlog[0].title
     const blogId = filteredBlog[0].id
-    
+
     if (window.confirm(`Delete ${blogTitle} ?`)) {
       blogService
         .remove(blogId)
@@ -97,12 +97,12 @@ const App = () => {
     if (userId === undefined) {
       userId = likedBlog.user
     }
-    const changedBlog = {...likedBlog, user: userId, likes: likes} // must update userid and likes
+    const changedBlog = { ...likedBlog, user: userId, likes: likes } // must update userid and likes
 
     console.log('changed blog', changedBlog)
 
     blogService.update(likedBlog.id, changedBlog)
-    .then(setBlogs(blogs.map(blog => blog.id !== likedBlog.id ? blog : changedBlog)))
+      .then(setBlogs(blogs.map(blog => blog.id !== likedBlog.id ? blog : changedBlog)))
   }
 
 
@@ -141,30 +141,30 @@ const App = () => {
 
   return (
     <div>
-    {user === null ?
-    loginForm() :
-      <div>
-        <p>{user.name} logged in</p>
-        <button className='logout-button' onClick={() => handleLogout()}>log out</button>
-        <div> <br /> </div>
-        <Notification message={errorMessage} type={messageType}/>
-        <Togglable buttonLabel="add new blog" ref={blogFormRef}>
-          <AddBlogForm 
-            createBlog={addBlog}
-          />
-        </Togglable>
-        <h2>all blogs</h2>
-        {blogs
-        .sort((a, b) => b.likes - a.likes)
-        .map((blog, id) => 
-        <Blog key={id} 
-        blog={blog} 
-        user={user}
-        handleDeleteClick={handleDeleteClick} 
-        handleLikeClick={handleLikeClick} 
-        />)}
-      </div>
-    }
+      {user === null ?
+        loginForm() :
+        <div>
+          <p>{user.name} logged in</p>
+          <button className='logout-button' onClick={() => handleLogout()}>log out</button>
+          <div> <br /> </div>
+          <Notification message={errorMessage} type={messageType}/>
+          <Togglable buttonLabel="add new blog" ref={blogFormRef}>
+            <AddBlogForm
+              createBlog={addBlog}
+            />
+          </Togglable>
+          <h2>all blogs</h2>
+          {blogs
+            .sort((a, b) => b.likes - a.likes)
+            .map((blog, id) =>
+              <Blog key={id}
+                blog={blog}
+                user={user}
+                handleDeleteClick={handleDeleteClick}
+                handleLikeClick={handleLikeClick}
+              />)}
+        </div>
+      }
     </div>
   )
 }
