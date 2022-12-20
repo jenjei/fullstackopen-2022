@@ -59,16 +59,15 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
     blogService
       .create(blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-        setErrorMessage(`Added ${blogObject.title}`)
-      })
+
+    setErrorMessage(`Added ${blogObject.title}`)
     setMessageType('success')
     setTimeout(() => {
       setErrorMessage(null)
       setMessageType('')
       console.log('timeout')
-      window.location.reload() // without this reload, new blog doesnt render who added the blog and delete button is not showed
+      blogService.getAll()
+        .then(blogs => setBlogs(blogs))
     }, 5000)
   }
 
