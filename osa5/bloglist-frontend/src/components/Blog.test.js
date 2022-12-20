@@ -110,3 +110,44 @@ test('details are showed when title is clicked', async () => {
   
     expect(mockHandler.mock.calls).toHaveLength(1) // this ensures that element has been clicked just once
   })
+
+  test('clicking the like button twice calls event handler twice', async () => {
+    const blog = {
+        title: 'Benefits of Scrumban',
+        author: 'Kalle Ilves',
+        url: 'www.google.com',
+        likes: 7,
+        user: { 
+            name: 'Jenni',
+            username: 'jenniaylis',
+            password: 'asdf1234'
+        }
+      }
+    
+      const user = {
+        name: 'Jenni',
+        username: 'jenniaylis',
+        password: 'asdf1234'
+      }
+    
+      const handleDeleteClick = (id) => {
+        console.log('clicked delete', id)
+      }
+  
+    const mockHandler = jest.fn()
+  
+    render(
+        <Blog blog={blog} 
+        user={user} 
+        handleDeleteClick={handleDeleteClick} 
+        handleLikeClick={mockHandler}
+        />
+    )
+  
+    const theUser = userEvent.setup()
+    const button = screen.getByText('♥')
+    await theUser.click(button)
+    await theUser.click(button)
+  
+    expect(mockHandler.mock.calls).toHaveLength(2)
+  })
