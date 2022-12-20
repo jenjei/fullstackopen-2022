@@ -2,11 +2,11 @@ import './blog.css'
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog, user, handleLikeClick, handleDeleteClick }) => {
-  const [loginVisible, setLoginVisible] = useState(false)
+const Blog = ({ blog, user, handleLikeClick, handleDeleteClick, test }) => {
+  const [detailsVisible, setDetailsVisible] = useState(false)
 
-  const hideWhenVisible = { display: loginVisible ? 'none' : '' }
-  const showWhenVisible = { display: loginVisible ? '' : 'none' }
+  const hideWhenVisible = { display: detailsVisible ? 'none' : '' }
+  const showWhenVisible = { display: detailsVisible ? '' : 'none' }
 
   const deleteButton = () => (
     <div className="box-align-right">
@@ -20,8 +20,8 @@ const Blog = ({ blog, user, handleLikeClick, handleDeleteClick }) => {
 
   return (
     <div>
-      <div style={hideWhenVisible} className="box">
-        <b onClick={() => setLoginVisible(true)} className="collapsible">► {blog.title}</b>
+      <div style={hideWhenVisible} onClick={() => test()} className="box">
+        <b onClick={() => setDetailsVisible(true)} data-testid="not-expanded-title-test" className="collapsible">► {blog.title}</b>
       </div>
 
       <div className="box-expanded" style={showWhenVisible}>
@@ -29,10 +29,10 @@ const Blog = ({ blog, user, handleLikeClick, handleDeleteClick }) => {
         {user.username === blog.user.username ? deleteButton() : nothing() }
 
         <div className="textdiv">
-          <b onClick={() => setLoginVisible(false)} className="collapsible">▼ {blog.title}</b>
-          <p>by {blog.author} | <small>added by {blog.user.username}</small></p>
-          <a href={blog.url}>{blog.url}</a>
-          <p className="liketext">Likes {blog.likes}</p>
+          <b onClick={() => setDetailsVisible(false)} data-testid="expanded-title-test" className="collapsible">▼ {blog.title}</b>
+          <p data-testid="author-n-username-test">by {blog.author} | <small>added by {blog.user.username}</small></p>
+          <a href={blog.url} data-testid="url-test">{blog.url}</a>
+          <p className="liketext" data-testid='likes-test'>Likes {blog.likes}</p>
         </div>
         <button className="likebutton" onClick={() => handleLikeClick(blog.id)}>♥</button>
       </div>
