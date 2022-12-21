@@ -105,23 +105,23 @@ test('clicking the like button twice calls event handler twice', async () => {
 })
 
 test('<AddBlogForm /> updates parent state and calls onSubmit', async () => {
-    const user = userEvent.setup()
-    const createBlog = jest.fn()
-  
-    render(<AddBlogForm createBlog={createBlog} />)
-  
-    const inputAuthor = screen.getByPlaceholderText('author')
-    const inputUrl = screen.getByPlaceholderText('url')
-    const inputTitle = screen.getByPlaceholderText('title')
-    const sendButton = screen.getByText('add')
-  
-    await user.type(inputAuthor, 'me')
-    await user.type(inputUrl, 'myself')
-    await user.type(inputTitle, 'and AI')
-    await user.click(sendButton)
-  
-    expect(createBlog.mock.calls).toHaveLength(1)
-    expect(createBlog.mock.calls[0][0].author).toBe('me')
-    expect(createBlog.mock.calls[0][0].url).toBe('myself')
-    expect(createBlog.mock.calls[0][0].title).toBe('and AI')
-  })
+  const user = userEvent.setup()
+  const createBlog = jest.fn()
+
+  render(<AddBlogForm createBlog={createBlog} />)
+
+  const inputAuthor = screen.getByPlaceholderText('author')
+  const inputUrl = screen.getByPlaceholderText('url')
+  const inputTitle = screen.getByPlaceholderText('title')
+  const sendButton = screen.getByText('add')
+
+  await user.type(inputAuthor, 'me')
+  await user.type(inputUrl, 'myself')
+  await user.type(inputTitle, 'and AI')
+  await user.click(sendButton)
+
+  expect(createBlog.mock.calls).toHaveLength(1)
+  expect(createBlog.mock.calls[0][0].author).toBe('me')
+  expect(createBlog.mock.calls[0][0].url).toBe('myself')
+  expect(createBlog.mock.calls[0][0].title).toBe('and AI')
+})

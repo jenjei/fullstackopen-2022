@@ -37,6 +37,7 @@ const App = () => {
       <Notification message={errorMessage} type={messageType}/>
       <div>
         <p>username: </p><input
+          id='username'
           type="text"
           value={username}
           name="Username"
@@ -45,13 +46,14 @@ const App = () => {
       </div>
       <div>
         <p>password: </p><input
+          id='password'
           type="password"
           value={password}
           name="Password"
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button type="submit">login</button>
+      <button id='login-button' type="submit">login</button>
     </form>
   )
 
