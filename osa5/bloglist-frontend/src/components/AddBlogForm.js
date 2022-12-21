@@ -41,16 +41,19 @@ const AddBlogForm = ( { createBlog } ) => {
     <form onSubmit={handleAddBlogClick}>
       <h3>add new blog</h3>
       <input
+        className='author'
         value={newAuthor}
         onChange={handleAuthorChange}
         placeholder='author'
       />
       <input
+        className='title'
         value={newTitle}
         onChange={handleTitleChange}
         placeholder='title'
       />
       <input
+        id="url"
         value={newUrl}
         onChange={handleUrlChange}
         placeholder='url'
