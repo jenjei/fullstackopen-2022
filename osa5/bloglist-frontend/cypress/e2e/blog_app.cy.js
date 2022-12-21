@@ -24,8 +24,8 @@ describe('Blog ', function() {
     })
 
     it('fails with wrong credentials', function() {
-        cy.get('input:first').type('mluukkai')
-        cy.get('input:last').type('salainen')
+        cy.get('input[name="Username"]').type('mluukkai')
+        cy.get('input[name="Password"]').type('salainen')
         cy.contains('login').click()
     
         cy.contains('wrong username or password')
@@ -35,8 +35,8 @@ describe('Blog ', function() {
 
   describe('When logged in', function() {
     beforeEach(function() {
-        cy.get('input:first').type('jenniaylis')
-        cy.get('input:last').type('salainen')
+        cy.get('input[name="Username"]').type('jenniaylis')
+        cy.get('input[name="Password"]').type('salainen')
         cy.contains('login').click()
     })
 
@@ -49,6 +49,18 @@ describe('Blog ', function() {
 
         cy.wait(5500) // because new blog is displayed to the list after 5 secs
         cy.get('div[class="box"]').contains('another blog')
+    })
+    it('A blog can be liked', function() {
+        cy.contains('add new blog').click()
+        cy.get('input[placeholder="title"]').type('another blog')
+        cy.get('input[placeholder="author"]').type('cypress')
+        cy.get('input[placeholder="url"]').type('google.com')
+        cy.get('button[type="submit"]').click()
+
+        cy.wait(5500)
+        cy.get('div[class="box"]').contains('another blog').click()
+        cy.get('button[class="likebutton"]').click()
+        cy.get('p[class="liketext"]').contains('Likes 1')
     })
   })
 })
