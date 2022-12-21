@@ -63,4 +63,33 @@ describe('Blog ', function() {
         cy.get('p[class="liketext"]').contains('Likes 1')
     })
   })
+  describe('When logged in and blog added', function() {
+    beforeEach(function() {
+        cy.get('input[name="Username"]').type('jenniaylis') // login
+        cy.get('input[name="Password"]').type('salainen')
+        cy.contains('login').click()
+
+        cy.contains('add new blog').click() // add blog to the list
+        cy.get('input[placeholder="title"]').type('another blog')
+        cy.get('input[placeholder="author"]').type('cypress')
+        cy.get('input[placeholder="url"]').type('google.com')
+        cy.get('button[type="submit"]').click()
+
+        cy.contains('add new blog').click() // add another blog to the list
+        cy.get('input[placeholder="title"]').type('best blog ever')
+        cy.get('input[placeholder="author"]').type('cypress')
+        cy.get('input[placeholder="url"]').type('google.com')
+        cy.get('button[type="submit"]').click()
+    })
+
+    it('A blog can be deleted', function() {
+        cy.wait(5500)
+        cy.get('div[class="box"]').contains('another blog').click()
+        cy.wait(200)
+        cy.contains('x').click()
+
+        cy.get('div[class="box"]').contains('another blog').should('not.exist')
+        cy.get('div[class="box"]').contains('best blog ever')
+    })
+  })
 })
