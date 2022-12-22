@@ -33,13 +33,13 @@ The user can view/ unview more details about a blog in the list by clicking the 
 
 
 
-Bugs (what I have noticed, could be more):
+### Bugs (what I have noticed, could be more):
 
 - when like button is clicked many times, blog adder disappears (but can be viewed again if the page is refreshed)
 - when user adds new blog to the list, the new blog is rendered after 5 seconds (I had problem with rendering the notification at the same time)
 
 
-Todo (ideas how this app could be developed further):
+### Todo (ideas how this app could be developed further):
 
 - dropdown menu with sort options (e.g. alphabetical order, newest first order etc)
 - search field for user to search a specific blog

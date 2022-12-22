@@ -1,7 +1,7 @@
 # Testing Express servers, user administration
 
 In this part, I learned
-- to write unit and integration tests for the backend
+- to write integration tests for the backend
 - to implement user authentication and authorization
 
 
