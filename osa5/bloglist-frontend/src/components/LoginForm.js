@@ -73,7 +73,6 @@ const LoginForm = ({
 
       <form className='card' onSubmit={handleCreateUserClick}>
         <h2>Create User</h2>
-        <Notification message={errorMessage} type={messageType}/>
         <div>
           <p>your name: </p><input
             id='name'
