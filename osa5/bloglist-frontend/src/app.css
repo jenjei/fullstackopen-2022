@@ -1,3 +1,15 @@
 .logout-button {
     margin-bottom: 10px;
 }
+b {
+    color: darkcyan;
+    font-size: 15px;
+    margin-top: 20px;
+    padding-top: 20px;
+}
+.titles {
+    margin: 20px;
+    margin-top: 20px;
+    padding-top: 20px;
+    background-color: aliceblue;
+}

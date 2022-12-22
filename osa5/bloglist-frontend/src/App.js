@@ -3,9 +3,11 @@ import './app.css'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import userService from './services/users'
 import Notification from './components/Notification'
 import AddBlogForm from './components/AddBlogForm'
 import Togglable from './components/Togglable'
+import LoginForm from './components/LoginForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -30,32 +32,6 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <h2>Login</h2>
-      <Notification message={errorMessage} type={messageType}/>
-      <div>
-        <p>username: </p><input
-          id='username'
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        <p>password: </p><input
-          id='password'
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button id='login-button' type="submit">login</button>
-    </form>
-  )
 
   const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
@@ -107,6 +83,17 @@ const App = () => {
       .then(setBlogs(blogs.map(blog => blog.id !== likedBlog.id ? blog : changedBlog)))
   }
 
+  const handleCreateUser = (newUser) => {
+    console.log('clicked create new user')
+    userService.create(newUser)
+
+    setErrorMessage(`Created user: ${newUser.username}`)
+    setMessageType('success')
+    setTimeout(() => {
+      setErrorMessage(null)
+      setMessageType('')
+    }, 5000)
+  }
 
   const handleLogin = async(event) => {
     event.preventDefault()
@@ -141,10 +128,22 @@ const App = () => {
     window.location.reload()
   }
 
+  const test = () => {
+    console.log('testing expansion click') // this is very unnecessary function
+  }
+
   return (
     <div>
       {user === null ?
-        loginForm() :
+        <LoginForm
+          handleLogin={handleLogin}
+          errorMessage={errorMessage}
+          messageType={messageType}
+          username={username}
+          password={password}
+          setUsername={setUsername}
+          setPassword={setPassword}
+          createUser={handleCreateUser}  /> :
         <div>
           <p>{user.name} logged in</p>
           <button className='logout-button' onClick={() => handleLogout()}>log out</button>
@@ -164,6 +163,7 @@ const App = () => {
                 user={user}
                 handleDeleteClick={handleDeleteClick}
                 handleLikeClick={handleLikeClick}
+                test={test}
               />)}
         </div>
       }
