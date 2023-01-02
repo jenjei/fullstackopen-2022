@@ -23,7 +23,7 @@ const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
 
-  switch (action.type) {
+  switch (action.type) { // actions here in switch-case:
     case 'ADD_VOTE':
       const id = action.id.id
       const anecdoteToChange = state.find(n => n.id === id)
@@ -42,6 +42,8 @@ const reducer = (state = initialState, action) => {
     default: return state
   }
 }
+
+// action creators below:
 
 export const addVote = (id) => {
   return {
