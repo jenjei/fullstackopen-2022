@@ -1,3 +1,5 @@
+import { createSlice } from '@reduxjs/toolkit'
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -19,48 +21,43 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const reducer = (state = initialState, action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
 
-  switch (action.type) { // actions here in switch-case:
-    case 'ADD_VOTE':
-      const id = action.id.id
+const anecdoteSlice = createSlice({
+  name: 'anecdotes',
+  initialState: [],
+  reducers: {
+    voteAnecdote(state, action) {
+      const id = action.payload
+      console.log('action id', id)
       const anecdoteToChange = state.find(n => n.id === id)
       const changedAnecdote = { 
         ...anecdoteToChange, 
         votes: anecdoteToChange.votes + 1
       }
-      return state.map(anecdote =>
-        anecdote.id !== id ? anecdote : changedAnecdote 
-      )
-    case 'NEW_ANECDOTE':
-      const data = action.data
-      console.log(data)
-      return state.concat(data)
-
-    default: return state
-  }
-}
-
-// action creators below:
-
-export const addVote = (id) => {
-  return {
-    type: 'ADD_VOTE',
-    id: { id }
-  }
-}
-
-export const createAnecdote = (content) => {
-  return {
-    type: 'NEW_ANECDOTE',
-    data: {
-      content,
-      id: getId(),
-      votes: 0
+      state = state.map(anecdote =>
+        anecdote.id !== id ? anecdote: changedAnecdote)
+      return state.sort((b,a) => {
+        return a.votes - b.votes
+      })
+    },
+    createNewAnecdote(state, action) {
+      const data = action.payload
+      console.log('data', data)
+      state.push({
+        data,
+        id: getId(),
+        votes: 0
+      })
+    },
+    appendAnecdote(state, action) {
+      state.push(action.payload)
+    },
+    setAnecdotes(state, action) {
+      return action.payload
     }
-  }
-}
+  },
+})
 
-export default reducer
+export const { voteAnecdote, createNewAnecdote, appendAnecdote, setAnecdotes } = anecdoteSlice.actions
+
+export default anecdoteSlice.reducer

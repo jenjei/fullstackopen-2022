@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux'
-import { createAnecdote } from '../reducers/anecdoteReducer'
+import { createNewAnecdote } from '../reducers/anecdoteReducer'
 import { createAddNotification } from '../reducers/notificationReducer'
 
 const NewAnecdote = (props) => {
@@ -10,7 +10,7 @@ const NewAnecdote = (props) => {
     console.log(event.target.anecdote.value) // form input is event.target.anecdote.value, uncontrolled component
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    dispatch(createAnecdote(content))
+    dispatch(createNewAnecdote(content))
     dispatch(createAddNotification(content))
   }
 

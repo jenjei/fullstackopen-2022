@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { addVote } from '../reducers/anecdoteReducer'
+import { voteAnecdote, appendAnecdote } from '../reducers/anecdoteReducer'
 import { createVoteNotification } from '../reducers/notificationReducer'
 
 const AnecdoteList = (props) => {
@@ -7,10 +7,12 @@ const AnecdoteList = (props) => {
     const anecdotes = useSelector(state => state.anecdotes)
     const dispatch = useDispatch()
 
+    console.log('anecdotes', anecdotes)
+
     const vote = (anecdote) => {
         console.log('vote', anecdote.id, anecdote.content)
         console.log('notifications', notifications)
-        dispatch(addVote(anecdote.id))
+        dispatch(voteAnecdote(anecdote.id))
         dispatch({ type: 'notifications/deleteNotification', payload: notifications.id })
         dispatch(createVoteNotification(anecdote.content))
     }
@@ -18,7 +20,6 @@ const AnecdoteList = (props) => {
     return (
         <div>
             {anecdotes
-            .sort((a, b) => b.votes - a.votes)
             .map(anecdote =>
             <div key={anecdote.id}>
                 <div>
