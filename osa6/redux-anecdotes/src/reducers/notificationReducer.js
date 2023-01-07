@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = { notification: 'testing' }
+const initialState = { notification: undefined }
 
 const notificationSlice = createSlice({
     name: 'notifications',
@@ -22,9 +22,17 @@ const notificationSlice = createSlice({
                 notification: 'You created anecdote: "' + notification + '"'       
             }
         )
+      },
+      clearNotification(state, action) {
+        const nolla = undefined
+        return (
+          {
+            notification: nolla,
+          }
+        )
       }
     },
   })
   
-export const { createVoteNotification, createAddNotification } = notificationSlice.actions
+export const { createVoteNotification, createAddNotification, clearNotification } = notificationSlice.actions
 export default notificationSlice.reducer

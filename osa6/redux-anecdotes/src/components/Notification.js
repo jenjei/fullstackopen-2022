@@ -6,8 +6,7 @@ const Notification = () => {
   const state = useSelector(state => state)
 
   console.log('state at notification:', state)
-  console.log('state notification:', notification) 
-
+  console.log('state notification:', notification.notification)
 
   const style = {
     border: 'solid',
@@ -15,11 +14,19 @@ const Notification = () => {
     borderWidth: 1
   }
 
-  return (
-    <div style={style}>
-      {notification.notification}
-    </div>
-  )
+  if (notification.notification===undefined) {
+    return (
+      <div>
+      </div>
+    )
+  } 
+  else {
+    return (
+      <div style={style}>
+        {notification.notification}
+      </div>
+    )
+  }
 }
 
 export default Notification
