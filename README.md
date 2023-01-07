@@ -14,10 +14,12 @@ MongoDB https://www.mongodb.com/atlas/database
 
 Integration, unit and E2E testing.
 
+Flux architecture and Redux
+
 
 # What was hard? How could I improve my skills?
 
-Debugging is hard from time to time. It should improve over time. I suppose. Love the problem not the solution :) I learned to use console.log basically everywhere. I used less debuggers, so there is still a lot to learn about debugging.
+Debugging is hard from time to time. It should improve over time. I suppose. Love the problem not the solution :) I learned to use console.log basically everywhere. I didn't use debuggers much, so there is still something to learn about debugging.
 
 Backend: authentication and data modeling/routing through http.
 
