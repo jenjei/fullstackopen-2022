@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import {
   BrowserRouter as Router,
-  Routes, Route, Link
+  Routes, Route, Link, useNavigate, useParams
 } from "react-router-dom"
-import { useParams } from 'react-router-dom'
 
 
 const AnecdoteList = ({ anecdotes }) => (
@@ -51,6 +50,7 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
+  const navigate = useNavigate()
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
@@ -64,6 +64,11 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    props.setNotification(`a new anecdote ${content} is created!`)
+    navigate('/anecdotes')
+    setTimeout(() => {
+      props.setNotification('')
+    }, 5000)
   }
 
   return (
@@ -71,18 +76,15 @@ const CreateNew = (props) => {
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          content <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
         </div>
         <div>
-          author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          author <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
         </div>
         <div>
-          url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          url for more info <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
       </form>
     </div>
   )
@@ -108,6 +110,11 @@ const App = () => {
   ])
   const [notification, setNotification] = useState('')
 
+  const setNotif = (notif) => {
+    setNotification(notif)
+    console.log('notification', notif)
+  }
+
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
@@ -118,12 +125,10 @@ const App = () => {
 
   const vote = (id) => {
     const anecdote = anecdoteById(id)
-
     const voted = {
       ...anecdote,
       votes: anecdote.votes + 1
     }
-
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
   const padding = {
@@ -134,15 +139,17 @@ const App = () => {
     <Router>
       <h1>Software Anecdotes</h1>
       <div>
+        <Link style={padding} to="/"></Link>
         <Link style={padding} to="/anecdotes">anecdotes</Link>
         <Link style={padding} to="/createnew">create new</Link>
         <Link style={padding} to="/about">about</Link>
       </div>
-
+      {notification ? <p>{notification}</p> : <p></p>}
       <Routes>
+        <Route path="/" element={<AnecdoteList anecdotes={anecdotes}/>}></Route>
         <Route path="/anecdotes/:id" element={<Anecdote anecdotes={anecdotes} />} />
         <Route path="/anecdotes" element={<AnecdoteList anecdotes={anecdotes} />} />
-        <Route path="/createnew" element={<CreateNew />} />
+        <Route path="/createnew" element={<CreateNew addNew={addNew} setNotification={setNotif}/>} />
         <Route path="/about" element={<About />} />
       </Routes>
 
