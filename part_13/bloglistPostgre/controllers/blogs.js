@@ -45,4 +45,17 @@ router.delete('/:id', async (req, res) => {
     }
 })
 
+// UPDATE likes: increase
+router.put('/:id', async (req, res) => {
+    const blog = await Blog.findByPk(req.params.id)
+    if (blog) {
+        console.log('updating likes', req.body.likes)
+      blog.likes = req.body.likes
+      await blog.save()
+      res.json(blog)
+    } else {
+      res.status(404).end()
+    }
+})
+
 module.exports = router
