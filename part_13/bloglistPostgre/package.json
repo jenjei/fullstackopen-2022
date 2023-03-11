@@ -5,13 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "lint": "eslint ."
   },
   "author": "Jenni Ylisirniö",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.3",
+    "eslint": "^8.35.0",
     "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
     "nodemon": "^2.0.21",
     "pg": "^8.9.0",
     "sequelize": "^6.29.0"

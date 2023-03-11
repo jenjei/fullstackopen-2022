@@ -1,60 +1,60 @@
 // blog routes
 
 const router = require('express').Router()
-
 const { Blog } = require('../models/index')
+
+const blogFinder = async (req, res, next) => {
+    req.blog = await Blog.findByPk(req.params.id)
+    next()
+}
 
 // GET all blogs
 router.get('/', async (req, res) => {
-    const blogs = await Blog.findAll()
-    res.json(blogs)
+  const blogs = await Blog.findAll()
+  res.json(blogs)
 })
 
 // GET one blog by id
-router.get('/:id', async (req, res) => {
-    const blog = await Blog.findByPk(req.params.id)
-    
-    if (blog) {
-      console.log(blog.toJSON())
-      res.json(blog)
+router.get('/:id', blogFinder, async (req, res) => {
+    if(req.blog) {
+        res.json(req.blog)
     } else {
-      res.status(404).end()
+        throw Error('Not found')
     }
 })
 
 // POST/create new blog
 router.post('/', async (req, res) => {
-    try {
-      console.log('creating blog', req)
-      const blog = await Blog.create(req.body)
-      res.json(blog)
-    } catch(error) {
-      return res.status(400).json({ error })
+    console.log('creating blog', req)
+    const blog = await Blog.create(req.body)
+    if(blog) {
+        res.json(blog)
+    } else {
+        throw Error('Missing attributes')
     }
 })
 
 // DELETE one blog by id
-router.delete('/:id', async (req, res) => {
-    const blog = await Blog.findByPk(req.params.id)
-    
-    if (blog) {
-      blog.destroy()
-      console.log(blog, 'deleted')
-    } else {
-      res.status(400).end()
+router.delete('/:id', blogFinder, async (req, res) => {
+    if (req.blog) {
+      await req.blog.destroy()
+      console.log(req.blog, 'deleted')
+    } 
+    else {
+        throw Error('Not found')
     }
 })
 
 // UPDATE likes: increase
-router.put('/:id', async (req, res) => {
-    const blog = await Blog.findByPk(req.params.id)
-    if (blog) {
-        console.log('updating likes', req.body.likes)
-      blog.likes = req.body.likes
-      await blog.save()
-      res.json(blog)
-    } else {
-      res.status(404).end()
+router.put('/:id', blogFinder, async (req, res) => {
+    if (req.blog) {
+      console.log('updating likes', req.body.likes)
+      req.blog.likes = req.body.likes
+      await req.blog.save()
+      res.json(req.blog)
+    }
+    else {
+        throw Error('Not found')
     }
 })
 
