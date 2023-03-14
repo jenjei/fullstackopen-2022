@@ -5,7 +5,13 @@ const { Blog, User } = require('../models/index')
 const { tokenExtractor } = require('../utils/middleware')
 
 const blogFinder = async (req, res, next) => {
-    req.blog = await Blog.findByPk(req.params.id)
+    req.blog = await Blog.findByPk(req.params.id, {
+        include: {
+          model: User,
+          attributes: { exclude: ['id'] }
+        }
+      }
+    )
     next()
 }
 
