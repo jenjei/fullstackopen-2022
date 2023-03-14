@@ -8,11 +8,13 @@ const errorHandler = (error, request, response, next) => {
         case 'Blog not found':
             return response.status(404).send({ message: 'Malformatted id, blog not found' })
         case 'Blog missing attributes':
-            return response.status().send({ message: 'Missing url or title' })
+            return response.status(400).send({ message: 'Missing url or title' })
         case 'User not found':
           return response.status(404).send({ message: 'Malformatted id, user not found' })
         case 'User missing attributes':
-          return response.status().send({ message: 'Missing name or username' })
+          return response.status(400).send({ message: 'Missing name or username' })
+        case 'Validation error: Validation isEmail on username failed':
+          return response.status(400).send({ message: 'Malformatted username, must be in email format: foo@bar.com' })
     }
     
     next(error)
