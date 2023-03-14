@@ -15,6 +15,8 @@ const errorHandler = (error, request, response, next) => {
           return response.status(400).send({ message: 'Missing name or username' })
         case 'Validation error: Validation isEmail on username failed':
           return response.status(400).send({ message: 'Malformatted username, must be in email format: foo@bar.com' })
+        case 'Delete authorization error':
+          return response.status(403).send({ message: 'User cannot delete blogs added by other user' })
     }
     
     next(error)

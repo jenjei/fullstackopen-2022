@@ -43,11 +43,20 @@ router.post('/', tokenExtractor, async (req, res) => {
 })
 
 // DELETE one blog by id
-router.delete('/:id', blogFinder, async (req, res) => {
+router.delete('/:id', blogFinder, tokenExtractor, async (req, res) => {
+    const user = await User.findByPk(req.decodedToken.id)
+    console.log('user', user.dataValues.id)
+    console.log('reg blog', req.blog.dataValues.userId)
+
     if (req.blog) {
-      await req.blog.destroy()
-      console.log(req.blog, 'deleted')
-    } 
+        if (req.blog.dataValues.userId===user.dataValues.id) {
+            await req.blog.destroy()
+            console.log(req.blog, 'deleted')
+        }
+        else {
+            throw Error('Delete authorization error')
+        }
+    }
     else {
         throw Error('Blog not found')
     }
