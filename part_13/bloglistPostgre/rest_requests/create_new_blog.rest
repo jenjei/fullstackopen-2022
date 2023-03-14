@@ -1,8 +1,0 @@
-POST http://localhost:3001/api/blogs
-Content-Type: application/json
-
-{
-    "title": "Healthcare, Selling Lemons, and the Price of Developer Experience",
-    "author": "Geoff Graham",
-    "url": "https://css-tricks.com/healthcare-selling-lemons-and-the-price-of-developer-experience/"
-}

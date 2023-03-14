@@ -1,7 +1,8 @@
 // blog routes
 
 const router = require('express').Router()
-const { Blog } = require('../models/index')
+const { Blog, User } = require('../models/index')
+const { tokenExtractor } = require('../utils/middleware')
 
 const blogFinder = async (req, res, next) => {
     req.blog = await Blog.findByPk(req.params.id)
@@ -10,7 +11,13 @@ const blogFinder = async (req, res, next) => {
 
 // GET all blogs
 router.get('/', async (req, res) => {
-  const blogs = await Blog.findAll()
+  const blogs = await Blog.findAll({
+    attributes: { exclude: ['userId'] },
+    include: {
+      model: User,
+      attributes: ['name']
+    }
+  })
   res.json(blogs)
 })
 
@@ -19,18 +26,19 @@ router.get('/:id', blogFinder, async (req, res) => {
     if(req.blog) {
         res.json(req.blog)
     } else {
-        throw Error('Not found')
+        throw Error('Blog not found')
     }
 })
 
 // POST/create new blog
-router.post('/', async (req, res) => {
+router.post('/', tokenExtractor, async (req, res) => {
     console.log('creating blog', req)
-    const blog = await Blog.create(req.body)
+    const user = await User.findByPk(req.decodedToken.id)
+    const blog = await Blog.create({...req.body, userId: user.id})
     if(blog) {
         res.json(blog)
     } else {
-        throw Error('Missing attributes')
+        throw Error('Blog missing attributes')
     }
 })
 
@@ -41,7 +49,7 @@ router.delete('/:id', blogFinder, async (req, res) => {
       console.log(req.blog, 'deleted')
     } 
     else {
-        throw Error('Not found')
+        throw Error('Blog not found')
     }
 })
 
@@ -54,7 +62,7 @@ router.put('/:id', blogFinder, async (req, res) => {
       res.json(req.blog)
     }
     else {
-        throw Error('Not found')
+        throw Error('Blog not found')
     }
 })
 
