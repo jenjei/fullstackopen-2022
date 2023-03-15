@@ -18,11 +18,14 @@ const blogFinder = async (req, res, next) => {
 
 // GET all blogs
 router.get('/', async (req, res) => {
-    const where = {}
+    let where = {}
 
     if (req.query.search) {
-        where.title = {
-          [Op.substring]: req.query.search
+        where = {
+            [Op.or]: [
+                {title: {[ Op.iLike ]: `%${req.query.search}%` } },
+                {author: {[ Op.iLike ]: `%${req.query.search}%` }}
+            ]
         }
     }
 
@@ -34,7 +37,13 @@ router.get('/', async (req, res) => {
     },
     where
   })
-  res.json(blogs)
+
+  if (where = {}) {
+    res.json({ message: 'nothing found with your search'})
+  } else {
+    res.json(blogs)
+  }
+  where = {}
 })
 
 // GET one blog by id
