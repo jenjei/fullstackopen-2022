@@ -3,7 +3,7 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp1c3Rib2IiLCJpZCI6MywiaWF0IjoxNjc4ODA3NTAzfQ.P7hWzJLrffLHc5-TnC_RUDwdN0gOliHTlRrvp7gaOSU
 
 {
-    "title": "How to use pants",
-    "author": "my mum",
+    "title": "Goofy Goober",
+    "author": "Patrick Star",
     "url": "https://www.google.com"
 }

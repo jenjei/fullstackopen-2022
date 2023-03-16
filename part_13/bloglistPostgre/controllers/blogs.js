@@ -35,15 +35,13 @@ router.get('/', async (req, res) => {
       model: User,
       attributes: ['name']
     },
-    where
+    where,
+    order: [
+        ['likes', 'DESC']
+    ]
   })
 
-  if (where = {}) {
-    res.json({ message: 'nothing found with your search'})
-  } else {
-    res.json(blogs)
-  }
-  where = {}
+  res.json(blogs)
 })
 
 // GET one blog by id
