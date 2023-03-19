@@ -6,9 +6,6 @@ const User = require('./user')
 User.hasMany(Blog) // one to many relation
 Blog.belongsTo(User)
 
-Blog.sync({ alter: true })
-User.sync({ alter: true })
-
 module.exports = {
   Blog,
   User

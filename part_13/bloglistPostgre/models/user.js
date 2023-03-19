@@ -22,6 +22,14 @@ User.init({
     type: DataTypes.STRING,
     allowNull: false
   },
+  admin: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  disabled: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
   created_at: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
@@ -34,7 +42,7 @@ User.init({
   sequelize,
   underscored: true,
   timestamps: true,
-  modelName: 'user',
+  modelName: 'users',
   createdAt: 'created_at',
   updatedAt: 'updated_at'
 })
