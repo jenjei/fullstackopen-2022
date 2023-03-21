@@ -40,8 +40,22 @@ router.post('/', async (req, res) => {
 
 // GET one user by id
 router.get('/:id', userFinder, async (req, res) => {
-  if (req.user) {
-    res.json(req.user)
+
+  const user = await User.findByPk(req.params.id, {
+    attributes: {exclude: ['']} ,
+    include:[{
+      model: Blog,
+      as: 'markedBlogs',
+      attributes: {exclude: ['userId']},
+      through: {
+        attributes: []
+      },
+    }
+  ]
+  })
+
+  if (user) {
+    res.json(user)
   } else {
     throw Error('User not found')
   }
