@@ -17,6 +17,10 @@ const errorHandler = (error, request, response, next) => {
           return response.status(400).send({ message: 'Malformatted username, must be in email format: foo@bar.com' })
         case 'Delete authorization error':
           return response.status(403).send({ message: 'User cannot delete blogs added by other user' })
+        case 'Validation error: Validation max on year failed':
+          return response.status(400).send({ message: 'Max year is current year. Cannot insert higher values.' })
+        case 'Validation error: Validation min on year failed':
+          return response.status(400).send({ message: 'Min year is 1991. Cannot insert lower values.' })
     }
     
     next(error)

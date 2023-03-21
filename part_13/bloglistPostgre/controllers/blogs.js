@@ -55,10 +55,10 @@ router.get('/:id', blogFinder, async (req, res) => {
 
 // POST/create new blog
 router.post('/', tokenExtractor, async (req, res) => {
-    console.log('creating blog', req)
     const user = await User.findByPk(req.decodedToken.id)
     const blog = await Blog.create({...req.body, userId: user.id})
-    if(blog) {
+    
+    if (blog) {
         res.json(blog)
     } else {
         throw Error('Blog missing attributes')
