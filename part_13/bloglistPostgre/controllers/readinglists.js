@@ -1,5 +1,16 @@
 const router = require('express').Router()
 const { Readinglist, User } = require('../models/index')
+const { tokenExtractor } = require('../utils/middleware')
+
+router.get('/', async(req, res) => {
+    const readinglists = await Readinglist.findAll({})
+
+    if (readinglists) {
+        res.json(readinglists)
+     } else {
+        throw Error('Database empty')
+     }
+})
 
 router.post('/', async (req, res) => {
     const {userId, blogId} = req.body
@@ -19,14 +30,18 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', tokenExtractor, async (req, res) => {
+    const user = await User.findByPk(req.decodedToken.id)
     const readinglist = await Readinglist.findByPk(req.params.id)
 
-    readinglist.read = req.body.read
-    await readinglist.save()
-    
     if (readinglist) {
-        res.json(readinglist)
+        if (user.id === readinglist.userId) {
+            readinglist.read = req.body.read
+            await readinglist.save()
+            res.json(readinglist)
+        } else {
+            throw Error('Unauthorized')
+        }
     }
     else {
         throw Error('Readinglist not found')
