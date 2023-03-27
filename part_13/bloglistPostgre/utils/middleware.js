@@ -21,6 +21,8 @@ const errorHandler = (error, request, response, next) => {
           return response.status(400).send({ message: 'Max year is current year. Cannot insert higher values.' })
         case 'Validation error: Validation min on year failed':
           return response.status(400).send({ message: 'Min year is 1991. Cannot insert lower values.' })
+        case 'Readinglist not found':
+          return response.status(404).send({ message: 'Malformatted id, readinglist not found' })
     }
     
     next(error)

@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Readinglist } = require('../models/index')
+const { Readinglist, User } = require('../models/index')
 
 router.post('/', async (req, res) => {
     const {userId, blogId} = req.body
@@ -15,8 +15,23 @@ router.post('/', async (req, res) => {
     if(readingList) {
         res.json(readingList)
     } else {
-        throw Error('No data')
+        throw Error('Readinglist error')
     }
+})
+
+router.put('/:id', async (req, res) => {
+    const readinglist = await Readinglist.findByPk(req.params.id)
+
+    readinglist.read = req.body.read
+    await readinglist.save()
+    
+    if (readinglist) {
+        res.json(readinglist)
+    }
+    else {
+        throw Error('Readinglist not found')
+    }
+
 })
 
 module.exports = router

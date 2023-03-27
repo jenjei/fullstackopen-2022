@@ -124,11 +124,34 @@ module.exports = {
             created_at: new Date(),
             updated_at: new Date(),
         },
+      ]),
+      await queryInterface.bulkInsert('readinglists', [
+        {
+            blog_id: 2,
+            user_id: 3
+        },
+        {
+            blog_id: 3,
+            user_id: 2
+        },
+        {
+            blog_id: 1,
+            user_id: 4
+        },
+        {   
+            blog_id: 4,
+            user_id: 1
+        },
+        {
+            blog_id: 1,
+            user_id: 3
+        }
       ])
     },
   
     down: async ({context: queryInterface}) => {
         await queryInterface.bulkDelete('blogs')
         await queryInterface.bulkDelete('users')
+        await queryInterface.bulkDelete('readinglists')
     },
   }
