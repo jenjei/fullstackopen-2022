@@ -1,10 +1,10 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp1c3Rib2IiLCJpZCI6MywiaWF0IjoxNjc4ODA3NTAzfQ.P7hWzJLrffLHc5-TnC_RUDwdN0gOliHTlRrvp7gaOSU
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2V0eXNvbjIyMzFAZXhhbXBsZS5jb20iLCJpZCI6NCwiaWF0IjoxNjc5OTM1NjA4fQ.EN8kOwYeaq49WDZ5OFtfUfW5qQn_5n1ZpYkxSCITgKk
 
 {
     "title": "Goofy Goober",
     "author": "Patrick Star",
     "url": "https://www.google.com",
-    "year": 2100
+    "year": 2010
 }

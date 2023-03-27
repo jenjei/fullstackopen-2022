@@ -150,8 +150,8 @@ module.exports = {
     },
   
     down: async ({context: queryInterface}) => {
-        await queryInterface.bulkDelete('blogs')
-        await queryInterface.bulkDelete('users')
-        await queryInterface.bulkDelete('readinglists')
+      await queryInterface.bulkDelete('readinglists')
+      await queryInterface.bulkDelete('blogs')
+      await queryInterface.bulkDelete('users')
     },
   }
