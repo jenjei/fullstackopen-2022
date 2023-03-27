@@ -40,6 +40,14 @@ router.post('/', async (req, res) => {
 
 // GET one user by id
 router.get('/:id', userFinder, async (req, res) => {
+  let where = {}
+
+  if(req.query.read === 'true') {
+    where = { read: true }
+  }
+  if(req.query.read === 'false') {
+    where = { read: false }
+  }
 
   const user = await User.findByPk(req.params.id, {
     attributes: {exclude: ['created_at', 'updated_at', 'id', 'admin', 'disabled']} ,
@@ -48,11 +56,10 @@ router.get('/:id', userFinder, async (req, res) => {
       as: 'readings',
       attributes: {exclude: ['userId', 'created_at', 'updated_at']},
       through: {
+        where,
         attributes: {exclude: ['userId', 'blogId']}
       }
-      
-    }
-  ]
+    }]
   })
 
   if (user) {

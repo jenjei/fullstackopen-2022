@@ -28,8 +28,6 @@ const errorHandler = (error, request, response, next) => {
         default:
           return res.status(500).send({ message: 'Oops, something went wrong :(' })
     }
-    
-    next(error)
 }
 
 const tokenExtractor = (req, res, next) => {
